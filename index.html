@@ -34,11 +34,11 @@ footer{font-size:13px;color:#52697b;text-align:center;margin-top:35px}
  <div class="card stack"><div class="row"><h3>Think like a mathematician</h3><span class="tag" id="explabel">1 of 3</span></div><p id="exq"></p><div class="row" style="justify-content:flex-start"><input type="number" id="exa" placeholder="Your prediction" aria-label="Your prediction"><button class="action primary" id="excheck">Check</button></div><div id="exfeedback" aria-live="polite"></div><button id="exnext" class="action hidden">Next investigation →</button></div>
  <button class="action primary" id="topractice" style="width:100%">Go to guided practice →</button>
 </section>
-<section id="practice" class="hidden"><div class="card soft">Apply what you discovered. Each question gives immediate feedback and an explanation.</div><div class="row"><strong id="pcounter"></strong><span id="pscore"></span></div><div class="bar" style="margin:12px 0"><div id="pbar"></div></div>
- <div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pq"></h2><div id="popts"></div><div id="pfeedback" aria-live="polite"></div><button class="action primary" id="pcheck">Check answer</button><button class="action primary hidden" id="pnext">Next question →</button></div><button id="tomastery" class="action" style="width:100%">Go to mastery check →</button>
+<section id="practice" class="hidden"><div class="card soft">Apply what you discovered. Each question gives immediate feedback and an explanation. You'll work with equations, actual graphs, and function tables.</div><div class="row"><strong id="pcounter"></strong><span id="pscore"></span></div><div class="bar" style="margin:12px 0"><div id="pbar"></div></div>
+ <div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pq"></h2><div id="pvisual"></div><div id="popts"></div><div id="pfeedback" aria-live="polite"></div><button class="action primary" id="pcheck">Check answer</button><button class="action primary hidden" id="pnext">Next question →</button></div><button id="tomastery" class="action" style="width:100%">Go to mastery check →</button>
 </section>
 <section id="mastery" class="hidden"><div id="mstart" class="card stack" style="text-align:center"><h2>Ready to show what you know?</h2><p>8 questions on function notation, inputs, outputs, tables and graphs. No hints during the check.</p><div class="soft"><strong>Mastery target: 7 out of 8 correct</strong></div><button class="action primary" id="mbegin">Start mastery check</button></div>
- <div id="mquiz" class="hidden stack"><div class="row"><strong id="mcounter"></strong><span class="tag">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mq"></h2><div id="mopts"></div><button class="action primary" id="msubmit">Submit answer →</button></div></div>
+ <div id="mquiz" class="hidden stack"><div class="row"><strong id="mcounter"></strong><span class="tag">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mq"></h2><div id="mvisual"></div><div id="mopts"></div><button class="action primary" id="msubmit">Submit answer →</button></div></div>
  <div id="mresults" class="card stack hidden"><div style="text-align:center"><div class="eyebrow">Mastery check complete</div><div class="math" style="font-size:48px" id="mresult"></div><h2 id="mverdict"></h2><p id="msummary"></p></div><div class="soft" id="mreview"></div><button class="action primary" id="mretry">Try another mastery check</button><button class="action" id="mpractice">Review guided practice</button></div>
 </section>
 <footer>Function Explorer · Student practice tool · Questions are freshly generated each visit. Results are shown on this device and are not submitted to your teacher.</footer>
@@ -161,7 +161,130 @@ function makeGraphQuestion(){
  const opts=shuffle(choices);
  return ['Graph interpretation','The graph of y = f(x) passes through ('+x+', '+y+'). Which statement describes this point?',opts,opts.indexOf(correct),'The graph point ('+x+', '+y+') tells you f('+x+') = '+y+'.'];
 }
-const practiceQuestions=generateSet([0,1,2,3,4,5]);
+
+/* SVG mini-graphs and function tables for multi-representation questions. */
+function visualMarkup(q){
+ const d=q[5];if(!d)return '';
+ if(d.kind==='table'){
+ let cells=d.points.map(p=>'<tr><td>'+p[0]+'</td><td>'+(p[1]===null?'?':p[1])+'</td></tr>').join('');
+ return '<div class="graph" style="max-width:320px;margin:0 auto 12px"><table><thead><tr><th>x</th><th>f(x)</th></tr></thead><tbody>'+cells+'</tbody></table></div>';
+ }
+ if(d.kind!=='graph')return '';
+ const W=360,H=300,X=v=>180+v*25,Y=v=>150-v*12.5;
+ let out='<svg viewBox="0 0 360 300" role="img" aria-label="Coordinate graph of a linear function with labeled x and y axes" style="max-width:500px;margin:0 auto">';
+ for(let i=-7;i<=7;i++)out+='<line x1="'+X(i)+'" y1="0" x2="'+X(i)+'" y2="300" stroke="#e0e9ef"/>';
+ for(let i=-11;i<=11;i++)out+='<line x1="0" y1="'+Y(i)+'" x2="360" y2="'+Y(i)+'" stroke="#e0e9ef"/>';
+ out+='<path d="M0 150H360 M180 0V300" stroke="#617c88" stroke-width="1.7" fill="none"/>';
+ for(let i=-6;i<=6;i+=2)if(i)out+='<text x="'+X(i)+'" y="166" text-anchor="middle" fill="#405664" font-size="11">'+i+'</text>';
+ for(let i=-10;i<=10;i+=2)if(i)out+='<text x="172" y="'+(Y(i)+4)+'" text-anchor="end" fill="#405664" font-size="11">'+i+'</text>';
+ out+='<text x="347" y="139" fill="#405664">x</text><text x="187" y="13" fill="#405664">y</text>';
+ out+='<line x1="'+X(-7.3)+'" y1="'+Y(d.a*-7.3+d.b)+'" x2="'+X(7.3)+'" y2="'+Y(d.a*7.3+d.b)+'" stroke="#087a83" stroke-width="3.5"/>';
+ if(d.highlight!==undefined){const hx=d.highlight,hy=d.a*hx+d.b;out+='<line x1="'+X(hx)+'" y1="'+Y(0)+'" x2="'+X(hx)+'" y2="'+Y(hy)+'" stroke="#c58634" stroke-width="1.8" stroke-dasharray="5 4"/><circle cx="'+X(hx)+'" cy="'+Y(hy)+'" r="6" stroke="white" stroke-width="2" fill="#c58634"/>';}
+ return '<div class="graph" style="margin-bottom:10px;padding:6px">'+out+'</svg></div>';
+}
+function graphValueQuestion(mode){
+ const a=randomInt(1,2)*(Math.random()<.5?-1:1),b=randomInt(-3,3);
+ const x=randomInt(-3,3),y=a*x+b;
+ if(mode==='value'){
+ const q=numericQuestion('Read a graph','Use the graph to find f('+x+').',y,'Find x = '+x+' on the horizontal axis, move to the line, and read y = '+y+'.',[x,y+a,y-a,-y]);
+ q[5]={kind:'graph',a,b};return q;
+ }
+ if(mode==='input'){
+ const q=numericQuestion('Find an input from a graph','Use the graph to find the input x where f(x) = '+y+'.',x,'Find output '+y+' on the vertical axis, move to the line, and read input x = '+x+'.',[y,x+1,x-1,-x]);
+ q[5]={kind:'graph',a,b};return q;
+ }
+ const correct=equation(a,b),choices=[correct,equation(-a,b),equation(a,b+2),equation(a+1,b)];
+ const opts=shuffle([...new Set(choices)]);
+ while(opts.length<4)opts.push(equation(a+opts.length+2,b-opts.length));
+ return ['Match a graph to a rule','Which equation matches this graph?',opts,opts.indexOf(correct),'The line has a slope of '+a+' and crosses the y-axis at '+b+'.',{kind:'graph',a,b}];
+}
+function newQuestion(type){
+ let a,b,x,y,answer,q;
+ switch(type){
+ case 8: return graphValueQuestion('value');
+ case 9: return graphValueQuestion('input');
+ case 10:return graphValueQuestion('rule');
+ case 11:
+  a=randomInt(1,4)*(Math.random()<.5?-1:1);b=randomInt(-5,5);x=randomInt(-3,3);answer=a*x+b;
+  q=numericQuestion('Complete a table','Use the table to determine the missing output f('+x+').',answer,'The outputs follow a constant change of '+a+' per 1 input. The missing value is '+answer+'.',[answer+a,answer-a,x,answer+2]);
+  q[5]={kind:'table',points:[[x-2,a*(x-2)+b],[x-1,a*(x-1)+b],[x,null],[x+1,a*(x+1)+b]]};return q;
+ case 12:
+  a=randomInt(2,8);b=randomInt(3,15);x=randomInt(2,8);answer=a*x+b;
+  return numericQuestion('Function in context','A bike rental costs 
+
+let pi=0,ps=0,pselected=-1,pan=false;
+function practice(){pselected=-1;pan=false;const q=practiceQuestions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];$('pvisual').innerHTML=visualMarkup(q);renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+$('popts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt||pan)return;pselected=+bt.dataset.choice;$('popts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===pselected))};
+$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=practiceQuestions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100%';$('pcounter').textContent='Practice complete';$('ptopic').textContent='Practice summary';$('pq').textContent='You answered '+ps+' of 6 correctly. Continue to the mastery check or repeat practice.';$('popts').innerHTML='';$('pvisual').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
+function startMastery(){attempt++;
+ const practiced=practiceQuestions.map(q=>q[1]);
+ mq=freshSet(shuffle([9,10,13,...shuffle([0,1,2,4,5,6,7,11,12]).slice(0,5)]),practiced);
+ mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];$('mvisual').innerHTML=visualMarkup(q);renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
+$('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;manswers.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>q[3]===manswers[i]).length;$('mresult').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Keep building your understanding';$('msummary').textContent=score>=7?'You demonstrated strong understanding of these concepts.':'Use the explanations below to review, then try again.';const missed=mq.map((q,i)=>({q,i})).filter(v=>v.q[3]!==manswers[v.i]);$('mreview').innerHTML=missed.length?'<strong>Concepts to review</strong>'+missed.map(v=>'<div style="border-top:1px solid #cbd8df;padding:12px 0"><strong>'+v.q[0]+'</strong><p>'+v.q[1]+'</p><div>Your answer: '+v.q[2][manswers[v.i]]+'</div><div><strong>Correct:</strong> '+v.q[2][v.q[3]]+'. '+v.q[4]+'</div></div>').join(''):'<strong>All correct!</strong> You connected equations, tables, graphs and function notation.'}
+$('mbegin').onclick=startMastery;$('mretry').onclick=startMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practice();tab('practice')};
+draw();showEx();practice();
+})();
+</script></body></html>+b+' to start and 
+
+let pi=0,ps=0,pselected=-1,pan=false;
+function practice(){pselected=-1;pan=false;const q=practiceQuestions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+$('popts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt||pan)return;pselected=+bt.dataset.choice;$('popts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===pselected))};
+$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=practiceQuestions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100%';$('pcounter').textContent='Practice complete';$('ptopic').textContent='Practice summary';$('pq').textContent='You answered '+ps+' of 6 correctly. Continue to the mastery check or repeat practice.';$('popts').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
+function startMastery(){attempt++;
+ const practiced=practiceQuestions.map(q=>q[1]);
+ mq=generateSet(shuffle([0,1,2,3,4,5,6,7]),practiced);
+ mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
+$('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;manswers.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>q[3]===manswers[i]).length;$('mresult').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Keep building your understanding';$('msummary').textContent=score>=7?'You demonstrated strong understanding of these concepts.':'Use the explanations below to review, then try again.';const missed=mq.map((q,i)=>({q,i})).filter(v=>v.q[3]!==manswers[v.i]);$('mreview').innerHTML=missed.length?'<strong>Concepts to review</strong>'+missed.map(v=>'<div style="border-top:1px solid #cbd8df;padding:12px 0"><strong>'+v.q[0]+'</strong><p>'+v.q[1]+'</p><div>Your answer: '+v.q[2][manswers[v.i]]+'</div><div><strong>Correct:</strong> '+v.q[2][v.q[3]]+'. '+v.q[4]+'</div></div>').join(''):'<strong>All correct!</strong> You connected equations, tables, graphs and function notation.'}
+$('mbegin').onclick=startMastery;$('mretry').onclick=startMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practice();tab('practice')};
+draw();showEx();practice();
+})();
+</script></body></html>+a+' per hour. If C(h) = '+a+'h + '+b+', what is C('+x+')?',answer,'The total cost is '+a+'('+x+') + '+b+' = 
+
+let pi=0,ps=0,pselected=-1,pan=false;
+function practice(){pselected=-1;pan=false;const q=practiceQuestions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+$('popts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt||pan)return;pselected=+bt.dataset.choice;$('popts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===pselected))};
+$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=practiceQuestions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100%';$('pcounter').textContent='Practice complete';$('ptopic').textContent='Practice summary';$('pq').textContent='You answered '+ps+' of 6 correctly. Continue to the mastery check or repeat practice.';$('popts').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
+function startMastery(){attempt++;
+ const practiced=practiceQuestions.map(q=>q[1]);
+ mq=generateSet(shuffle([0,1,2,3,4,5,6,7]),practiced);
+ mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
+$('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;manswers.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>q[3]===manswers[i]).length;$('mresult').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Keep building your understanding';$('msummary').textContent=score>=7?'You demonstrated strong understanding of these concepts.':'Use the explanations below to review, then try again.';const missed=mq.map((q,i)=>({q,i})).filter(v=>v.q[3]!==manswers[v.i]);$('mreview').innerHTML=missed.length?'<strong>Concepts to review</strong>'+missed.map(v=>'<div style="border-top:1px solid #cbd8df;padding:12px 0"><strong>'+v.q[0]+'</strong><p>'+v.q[1]+'</p><div>Your answer: '+v.q[2][manswers[v.i]]+'</div><div><strong>Correct:</strong> '+v.q[2][v.q[3]]+'. '+v.q[4]+'</div></div>').join(''):'<strong>All correct!</strong> You connected equations, tables, graphs and function notation.'}
+$('mbegin').onclick=startMastery;$('mretry').onclick=startMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practice();tab('practice')};
+draw();showEx();practice();
+})();
+</script></body></html>+answer+'.',[a*x,b*x,answer+a,answer-b]);
+ case 13:
+  a=randomInt(2,5)*(Math.random()<.5?-1:1);b=randomInt(-6,6);x=randomInt(-4,4);answer=a*x+b;
+  q=numericQuestion('Graph and table connections','Use the graph to find the output when x = '+x+'.',answer,'The graph passes through ('+x+', '+answer+'), so f('+x+') = '+answer+'.',[x,answer+a,answer-a,-answer]);
+  q[5]={kind:'graph',a,b,highlight:x};return q;
+ default:return makeQuestion(type);
+ }
+}
+function freshSet(types,avoid){
+ const seen=new Set(avoid||[]);
+ return types.map(type=>{
+ let q,attempts=0;
+ do{q=newQuestion(type);attempts++}while(seen.has(q[1])&&attempts<70);
+ seen.add(q[1]);return q;
+ });
+}
+
+const practiceQuestions=freshSet([0,1,8,2,11,4]);
 
 let pi=0,ps=0,pselected=-1,pan=false;
 function practice(){pselected=-1;pan=false;const q=practiceQuestions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
