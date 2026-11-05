@@ -1,0 +1,119 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lab 3 — Domain and Range | Function Explorer</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#172d40;background:#f4f8fb}*{box-sizing:border-box}body{margin:0}main{max-width:950px;margin:auto;padding:22px 16px 64px}h1{font-size:30px;margin:5px 0}h2{font-size:21px;margin:0}p{line-height:1.5}a{color:#087a83}.eyebrow{font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;color:#52697b}.muted{color:#52697b}.card{border:1px solid #d9e4eb;border-radius:13px;background:white;padding:19px}.soft{background:#eef5f8;padding:14px;border-radius:10px}.stack{display:grid;gap:14px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.tabs{display:flex;background:#e5eef2;border-radius:12px;gap:5px;padding:5px}.tab{border:0;background:transparent;border-radius:9px;flex:1;padding:12px 4px;font-weight:bold;color:#52697b;cursor:pointer}.tab.active{background:white;color:#075b65;box-shadow:0 1px 4px #0002}.btn{background:white;border:1px solid #bed0d9;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}.btn.primary{background:#087a83;border-color:#087a83;color:white}.btn:disabled{opacity:.45;cursor:default}.hidden{display:none!important}.pill{border:1px solid #d3e0e6;border-radius:20px;padding:6px 10px;font-size:12px}.choice{display:block;text-align:left;width:100%;border:1px solid #c5d8e1;background:white;border-radius:9px;padding:12px;margin:6px 0;cursor:pointer}.choice.selected{border:2px solid #087a83;background:#e8f5f5}.feedback{border-left:4px solid #087a83;background:#eef5f8;padding:12px;border-radius:8px}.feedback.warn{border-color:#c17e25}.graph{border:1px solid #d7e3e9;border-radius:11px;padding:7px;background:white;max-width:540px;margin:auto}.graph svg{display:block;width:100%;height:auto}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.control{display:grid;gap:6px}select{font:inherit;background:white;color:#172d40;border:1px solid #beced7;border-radius:8px;padding:10px}input[type=range]{width:100%;accent-color:#087a83}.math{font-size:22px;font-weight:bold}.bar{height:8px;background:#e6eef2;border-radius:20px;overflow:hidden}.bar>div{height:100%;background:#087a83}table{border-collapse:collapse;width:100%;text-align:center}td,th{border-bottom:1px solid #dbe6ed;padding:10px}th{background:#eef5f8}footer{text-align:center;color:#52697b;font-size:12px;margin-top:20px}@media(max-width:590px){.two{grid-template-columns:1fr}.card{padding:14px}h1{font-size:26px}.row.mobile{flex-wrap:wrap}}
+</style></head><body><main class="stack">
+<header class="row mobile"><div><div class="eyebrow"><a href="index.html">← Lab 1 / Home</a> · <a href="lab2.html">Lab 2</a></div><h1>Lab 3: Domain and Range</h1><div class="muted">Which inputs and outputs are possible?</div></div><span class="pill">Algebra 2 · Functions</span></header>
+<nav class="tabs" aria-label="Learning stages"><button class="tab active" data-tab="explore">1. Explore</button><button class="tab" data-tab="practice">2. Practice</button><button class="tab" data-tab="mastery">3. Mastery</button></nav>
+<section id="explore" class="stack">
+<div class="soft"><strong>Big idea:</strong> The <strong>domain</strong> contains all allowed x-values (inputs). The <strong>range</strong> contains all possible y-values (outputs). Read a graph left-to-right for domain and bottom-to-top for range.</div>
+<div class="card stack"><h2>Investigation: Change the graph</h2>
+<label class="control">Choose a function<select id="family"><option value="segment">Line segment</option><option value="parabola">Restricted quadratic</option><option value="absolute">Restricted absolute value</option><option value="sqrt">Square root</option><option value="ray">Ray</option></select></label>
+<div id="endpointcontrols" class="two"><label class="control">Left endpoint<select id="leftend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label><label class="control">Right endpoint<select id="rightend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label></div>
+<div class="graph"><svg id="exploregraph" viewBox="0 0 420 350" role="img" aria-label="Coordinate graph with endpoints"></svg></div>
+<div><div class="row"><strong>Move along the curve</strong><strong id="xlabel">x = 0</strong></div><input id="xslider" aria-label="Select an x-value" type="range" step=".25" min="-3" max="3" value="0"></div>
+<div class="soft" id="pointinfo" aria-live="polite"></div>
+<div class="two"><div class="soft"><div class="eyebrow">Domain</div><div id="domain" class="math">?</div></div><div class="soft"><div class="eyebrow">Range</div><div id="range" class="math">?</div></div></div>
+<button class="btn primary" id="reveal">Reveal domain and range</button><p id="explain" class="muted" style="margin:0"></p></div>
+<div class="soft"><strong>Try this:</strong> Select the line segment, then change one endpoint from closed to open. Predict which bracket in the domain and range notation changes. Next, explore the quadratic—its range is controlled by the vertex rather than just the left and right endpoints.</div>
+<button class="btn primary" id="topractice">Continue to guided practice →</button></section>
+<section id="practice" class="stack hidden"><div class="soft">Six questions with feedback, including graphs, endpoint notation, and tables. Practice questions are separate from the mastery check.</div><div class="row"><strong id="pcounter"></strong><span id="pscore" class="pill"></span></div><div class="bar"><div id="pbar"></div></div><div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pquestion"></h2><div id="pvisual"></div><div id="poptions"></div><div id="pfeedback" aria-live="polite"></div><button class="btn primary" id="pcheck">Check answer</button><button class="btn primary hidden" id="pnext">Next question →</button></div><button class="btn" id="tomastery">Go to mastery check →</button></section>
+<section id="mastery" class="stack hidden"><div class="card stack" id="mstart" style="text-align:center"><h2>Mastery check</h2><p>Eight fresh questions covering graphs, tables, open and closed endpoints, domain, range, and interval notation. No hints during the check.</p><div class="soft"><strong>Target: 7 of 8 correct</strong></div><button class="btn primary" id="mbegin">Start mastery check</button></div><div class="stack hidden" id="mquiz"><div class="row"><strong id="mcounter"></strong><span class="pill">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mquestion"></h2><div id="mvisual"></div><div id="moptions"></div><button class="btn primary" id="msubmit">Submit answer →</button></div></div><div class="card stack hidden" id="mresults"><div style="text-align:center"><div class="eyebrow">Mastery result</div><div style="font-size:48px;font-weight:bold" id="mscore"></div><h2 id="mverdict"></h2></div><div id="mreview" class="soft"></div><button class="btn primary" id="mretry">Try a new mastery check</button><button class="btn" id="mpractice">Review guided practice</button></div></section>
+<footer>Function Explorer · Lab 3 · Results stay in this browser session and are not submitted to your teacher.</footer>
+</main><script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+function interval(a,b,lc=true,rc=true){return (lc?'[':'(')+a+', '+b+(rc?']':')')}
+function model(type,params={}){
+ const L=params.l??-3,R=params.r??3,lc=params.lc??true,rc=params.rc??true;
+ if(type==='segment'){const slope=params.slope??1,b=params.b??1,u=slope*L+b,v=slope*R+b;return {type,l:L,r:R,lc,rc,fn:x=>slope*x+b,domain:interval(L,R,lc,rc),range:interval(Math.min(u,v),Math.max(u,v),slope>0?lc:rc,slope>0?rc:lc),desc:'Read x-values from left to right, and y-values from bottom to top.'}}
+ if(type==='parabola'){let h=params.h??0,k=params.k??-2,d=params.d??2;return {type,l:h-d,r:h+d,lc:true,rc:true,fn:x=>(x-h)*(x-h)+k,domain:interval(h-d,h+d),range:interval(k,k+d*d),desc:'The vertex produces the minimum output.'}}
+ if(type==='absolute'){let h=params.h??0,k=params.k??-2,d=params.d??3;return {type,l:h-d,r:h+d,lc:true,rc:true,fn:x=>Math.abs(x-h)+k,domain:interval(h-d,h+d),range:interval(k,k+d),desc:'The vertex produces the minimum output.'}}
+ if(type==='sqrt'){let h=params.h??-2,k=params.k??0;return {type,l:h,r:h+7,lc:true,rc:false,fn:x=>Math.sqrt(x-h)+k,domain:'['+h+', ∞)',range:'['+k+', ∞)',ray:true,desc:'The graph begins at an included point and continues indefinitely.'}}
+ let start=params.start??-2,b=params.b??1,slope=params.slope??1,closed=params.lc??true;
+ return {type:'ray',l:start,r:6,lc:closed,rc:false,fn:x=>slope*x+b,domain:(closed?'[':'(')+start+', ∞)',range:slope>0?(closed?'[':'(')+(slope*start+b)+', ∞)':'(−∞, '+(slope*start+b)+(closed?']':')'),ray:true,desc:'The arrow shows the function continues beyond the visible graph.'};
+}
+const X=x=>210+29*x,Y=y=>175-23*y;
+function graph(m,highlight=null){
+ let s='<svg viewBox="0 0 420 350" role="img" aria-label="Coordinate graph showing domain and range">';
+ for(let i=-7;i<=7;i++)s+='<path d="M'+X(i)+' 0V350 M0 '+Y(i)+' H420" stroke="#e0e9ee" fill="none"/>';
+ s+='<path d="M0 175H420 M210 0V350" stroke="#637f8a" stroke-width="1.7" fill="none"/>';
+ for(let i=-6;i<=6;i+=2)if(i)s+='<text x="'+X(i)+'" y="191" text-anchor="middle" font-size="11" fill="#52697b">'+i+'</text><text x="199" y="'+(Y(i)+4)+'" text-anchor="end" font-size="11" fill="#52697b">'+i+'</text>';
+ s+='<text x="403" y="164" fill="#52697b">x</text><text x="217" y="14" fill="#52697b">y</text><defs><clipPath id="graphclip"><rect width="420" height="350"/></clipPath></defs>';
+ let pts=[];for(let i=0;i<=160;i++){const x=m.l+(m.r-m.l)*i/160;pts.push(X(x)+','+Y(m.fn(x)))}s+='<polyline points="'+pts.join(' ')+'" stroke="#087a83" stroke-width="3.5" fill="none" clip-path="url(#graphclip)"/>';
+ if(m.ray){const xx=X(m.r),yy=Y(m.fn(m.r)),p=X(m.r-.35),q=Y(m.fn(m.r-.35));let dx=xx-p,dy=yy-q,z=Math.hypot(dx,dy),ux=dx/z,uy=dy/z;let ax=xx-ux*13-uy*6,ay=yy-uy*13+ux*6,bx=xx-ux*13+uy*6,by=yy-uy*13-ux*6;s+='<path d="M'+ax+' '+ay+' L'+xx+' '+yy+' L'+bx+' '+by+'" stroke="#087a83" stroke-width="2.5" fill="none"/>'}
+ for(const [x,closed] of [[m.l,m.lc],...(m.ray?[]:[[m.r,m.rc]])])s+='<circle cx="'+X(x)+'" cy="'+Y(m.fn(x))+'" r="6" fill="'+(closed?'#087a83':'white')+'" stroke="#087a83" stroke-width="2.5"/>';
+ if(highlight!==null){let y=m.fn(highlight);s+='<path d="M'+X(highlight)+' 175V'+Y(y)+' H210" stroke="#c77c29" stroke-width="2" stroke-dasharray="5 4" fill="none"/><circle cx="'+X(highlight)+'" cy="'+Y(y)+'" r="6" fill="#c77c29" stroke="white" stroke-width="2"/>'}
+ return s+'</svg>';
+}
+let exposed=false;
+function getExploreModel(){let f=$('family').value;return f==='segment'?model(f,{l:-3,r:3,lc:$('leftend').value==='closed',rc:$('rightend').value==='closed'}):model(f)}
+function exploreRender(){
+ let m=getExploreModel();$('endpointcontrols').classList.toggle('hidden',m.type!=='segment');
+ let slider=$('xslider');slider.min=m.l;slider.max=m.r;let x=Number(slider.value);if(x<m.l||x>m.r){x=m.l;slider.value=x}
+ $('exploregraph').innerHTML=graph(m,x);$('xlabel').textContent='x = '+x;
+ const notIncluded=(x===m.l&&!m.lc)||(x===m.r&&!m.rc);
+ $('pointinfo').textContent='At x = '+x+', the graph '+(notIncluded?'approaches':'has')+' y = '+Math.round(m.fn(x)*100)/100+'. '+(notIncluded?'This endpoint is OPEN, so that exact point is excluded.':'');
+ $('domain').textContent=exposed?m.domain:'?';$('range').textContent=exposed?m.range:'?';$('reveal').textContent=exposed?'Hide domain and range':'Reveal domain and range';$('explain').textContent=exposed?m.desc:'Predict first, then reveal the interval notation.';
+}
+$('family').onchange=()=>{exposed=false;$('xslider').value=0;exploreRender()};
+['leftend','rightend','xslider'].forEach(k=>$(k).oninput=exploreRender);
+$('reveal').onclick=()=>{exposed=!exposed;exploreRender()};
+function tab(name){['explore','practice','mastery'].forEach(v=>$(v).classList.toggle('hidden',v!==name));document.querySelectorAll('[data-tab]').forEach(v=>v.classList.toggle('active',v.dataset.tab===name));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
+function makeQuestion(type){
+ let l=rand(-5,-1),r=rand(1,5),lc=Math.random()<.5,rc=Math.random()<.5,askDomain=Math.random()<.5;
+ let m,q,answer,explain,opts,visual='',topic;
+ if(type==='segment'||type==='open'){
+  let slope=Math.random()<.5?1:-1,b=rand(-1,1);m=model('segment',{l,r,lc,rc,slope,b});askDomain=type==='open'?true:askDomain;
+  topic=askDomain?'Domain of a graph':'Range of a graph';q='Use the graph to identify its '+(askDomain?'domain.':'range.');
+  answer=askDomain?m.domain:m.range;
+  let a=askDomain?l:Math.min(m.fn(l),m.fn(r)),z=askDomain?r:Math.max(m.fn(l),m.fn(r));
+  opts=[answer,interval(a,z,true,true),interval(a,z,false,false),interval(a,z,!(askDomain?lc:(slope>0?lc:rc)),askDomain?rc:(slope>0?rc:lc))];
+  explain='Open circles are excluded; closed circles are included. The correct '+(askDomain?'input':'output')+' interval is '+answer+'.';visual=graph(m);
+ }else if(type==='quad'||type==='absolute'){
+  let h=rand(-1,1),k=rand(-3,0),d=type==='quad'?2:3;m=model(type==='quad'?'parabola':'absolute',{h,k,d});topic='Range from a graph';q='What is the range of this graph?';answer=m.range;
+  opts=[answer,m.domain,interval(k+1,k+(type==='quad'?4:3)+1),interval(k,k+(type==='quad'?4:3),false,false)];
+  explain='The vertex is the minimum output; the maximum occurs at the included endpoints. Range: '+answer+'.';visual=graph(m);
+ }else if(type==='sqrt'||type==='ray'){
+  let h=rand(-3,0),k=rand(-2,2);m=type==='sqrt'?model('sqrt',{h,k}):model('ray',{start:h,b:k,slope:1,lc:Math.random()<.5});askDomain=Math.random()<.5;
+  topic='Unbounded intervals';q='What is the '+(askDomain?'domain':'range')+' of this graph?';answer=askDomain?m.domain:m.range;
+  let start=askDomain?h:m.fn(h);opts=[answer,'('+start+', ∞)','['+start+', ∞)','(−∞, '+start+']'];
+  explain='The graph continues to the right, so the upper bound is ∞. Check the endpoint symbol. Answer: '+answer+'.';visual=graph(m);
+ }else if(type==='table'){
+  let x=rand(-5,-1),y=rand(1,5),output=rand(-4,2);let pairs=[[x,output],[x+2,output+3],[y,output+6]];
+  askDomain=Math.random()<.5;topic='Domain and range from a table';q='Identify the '+(askDomain?'domain':'range')+' of this table.';
+  const xs=pairs.map(p=>p[0]),ys=pairs.map(p=>p[1]),correct=askDomain?xs:ys;
+  answer='{'+correct.join(', ')+'}';
+  opts=[answer,'{'+(askDomain?ys:xs).join(', ')+'}','['+correct[0]+', '+correct[2]+']','{'+correct.slice(0,2).join(', ')+'}'];
+  explain=(askDomain?'Domain lists the input column.':'Range lists the output column.')+' Here the answer is '+answer+'.';
+  visual='<table><thead><tr><th>x</th><th>f(x)</th></tr></thead><tbody>'+pairs.map(p=>'<tr><td>'+p[0]+'</td><td>'+p[1]+'</td></tr>').join('')+'</tbody></table>';
+ }else{
+  topic='Understanding endpoints';let a=rand(-5,-1),b=rand(1,5);
+  answer=interval(a,b,false,true);q='A function is defined for all x greater than '+a+' and less than or equal to '+b+'. Which interval describes its domain?';
+  opts=[answer,interval(a,b,true,true),interval(a,b,true,false),interval(a,b,false,false)];
+  explain='Greater than excludes the left endpoint; less than or equal to includes the right endpoint.';
+ }
+ opts=shuffle([...new Set(opts)]);let delta=1;
+ while(opts.length<4){let extra='('+l+', '+(r+delta)+')';if(!opts.includes(extra))opts.push(extra);delta++}
+ return {topic,q,opts,correct:opts.indexOf(answer),explain,visual};
+}
+function visual(q){return q.visual?(q.visual.startsWith('<svg')?'<div class="graph">'+q.visual+'</div>':'<div class="graph" style="max-width:420px">'+q.visual+'</div>'):''}
+function answerChoices(id,q){$(id).innerHTML=q.opts.map((o,i)=>'<button class="choice" data-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>').join('')}
+function feedback(ok,text){return '<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct!':'Not quite.')+'</strong> '+text+'</div>'}
+const practiceTypes=['segment','table','open','quad','sqrt','absolute'];let practiceQuestions=practiceTypes.map(makeQuestion),pi=0,ps=0,sel=-1,answered=false;
+function practiceRender(){let q=practiceQuestions[pi];sel=-1;answered=false;$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q.topic;$('pquestion').textContent=q.q;$('pvisual').innerHTML=visual(q);answerChoices('poptions',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+$('poptions').onclick=e=>{const b=e.target.closest('[data-choice]');if(!b||answered)return;sel=+b.dataset.choice;$('poptions').querySelectorAll('button').forEach((t,i)=>t.classList.toggle('selected',i===sel))};
+$('pcheck').onclick=()=>{if(sel<0)return;answered=true;const q=practiceQuestions[pi],ok=sel===q.correct;if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML=feedback(ok,q.explain);$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practiceRender()}else{$('pcounter').textContent='Practice complete';$('pbar').style.width='100%';$('pquestion').textContent='You got '+ps+' of 6 correct. You can move on to mastery.';$('poptions').innerHTML='';$('pvisual').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let mq=[],mi=0,ms=[],mselected=-1;
+function beginMastery(){mq=shuffle(['segment','table','open','quad','sqrt','absolute','ray','word']).map(makeQuestion);mi=0;ms=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){let q=mq[mi];mselected=-1;$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q.topic;$('mquestion').textContent=q.q;$('mvisual').innerHTML=visual(q);answerChoices('moptions',q);$('msubmit').textContent=mi===7?'Finish mastery check →':'Submit answer →'}
+$('moptions').onclick=e=>{const b=e.target.closest('[data-choice]');if(!b)return;mselected=+b.dataset.choice;$('moptions').querySelectorAll('button').forEach((t,i)=>t.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;ms.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>ms[i]===q.correct).length;$('mscore').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Review and try again';let wrong=mq.map((q,i)=>({q,i})).filter(x=>ms[x.i]!==x.q.correct);$('mreview').innerHTML=wrong.length?'<strong>Review these concepts:</strong>'+wrong.map(x=>'<p><strong>'+x.q.topic+':</strong> '+x.q.q+'<br>Correct answer: '+x.q.opts[x.q.correct]+'. '+x.q.explain+'</p>').join(''):'All questions correct! You identified domain and range across different representations.'}
+$('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practiceQuestions=practiceTypes.map(makeQuestion);practiceRender();tab('practice')};
+exploreRender();practiceRender();
+})();
+</script></body></html>
