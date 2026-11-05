@@ -39,7 +39,7 @@ const id=Number(labMatch[1]);
 const labNames={1:'Function Basics',2:'Is It a Function?',3:'Domain and Range'};
 const resultsEl=document.querySelector('#mresults');
 if(!resultsEl)return;
-const notice=document.createElement('div');notice.className='fx-notice';notice.setAttribute('role','status');
+const notice=document.createElement('div');notice.className='fx-notice';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');notice.style.cssText='border:1px solid #c4d8df;background:#eff7f8;border-radius:10px;padding:15px;margin-top:16px;font:15px/1.5 Arial,sans-serif';
 resultsEl.appendChild(notice);
 function securePayload(questions,answers){
  return questions.map((q,i)=>({
@@ -58,10 +58,10 @@ function reportMastery(payload){
  if(body.total!==8){notice.textContent='This attempt did not contain eight answers, so it was not submitted.';return}
  // Apps Script web apps typically do not provide cross-origin response headers.
  // A no-cors POST delivers the request, but the browser cannot verify receipt.
- notice.textContent='Sending results to the school reporting service…';
+ notice.textContent='Submitting your mastery result…';
  fetch(SETTINGS.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),keepalive:true})
- .then(()=>{notice.textContent='Results submission attempted. Delivery cannot be verified here; check with your teacher if needed.'})
- .catch(()=>{notice.textContent='Could not send results. Please tell your teacher and keep this score visible.'});
+ .then(()=>{notice.innerHTML='<strong>Mastery check complete.</strong> Your results were sent from this browser for recording. Your teacher will receive a daily summary. Google Sheets receipt cannot be confirmed on this screen.'})
+ .catch(()=>{notice.innerHTML='<strong>Unable to send results.</strong> Keep this page open and let your teacher know so the score can be checked.'});
 }
 window.FunctionExplorerReporting={submit:reportMastery,studentName:currentName};
 })();
