@@ -171,10 +171,11 @@ function showResults(){
  const count=mq.filter((q,i)=>q.answer===ma[i]).length;
  $('mscore').textContent=count+' / 8';$('mverdict').textContent=count>=7?'Mastery target reached':'Review and try again';
  const missed=mq.map((q,i)=>({q,i})).filter(o=>o.q.answer!==ma[o.i]);
- $('mreview').innerHTML=missed.length?'<strong>Questions to revisit:</strong>'+missed.map(o=>'<p><strong>'+o.q.typ+':</strong> '+o.q.prompt+'<br>Correct response: '+o.q.opts[o.q.answer]+'. '+o.q.reason+'</p>').join(''):'All eight answers correct. You distinguished functions from non-functions in multiple representations.';
+ $('mreview').innerHTML=missed.length?'<strong>Questions to revisit:</strong>'+missed.map(o=>'<p><strong>'+o.q.typ+':</strong> '+o.q.prompt+'<br>Correct response: '+o.q.opts[o.q.answer]+'. '+o.q.reason+'</p>').join(''):'All eight answers correct. You distinguished functions from non-functions in multiple representations.';; 
+ if(window.FunctionExplorerReporting)window.FunctionExplorerReporting.submit(mq.map((q,i)=>({skill:q.typ,prompt:q.prompt,response:q.opts[ma[i]],correctAnswer:q.opts[q.answer],correct:ma[i]===q.answer})));
 }
 $('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;
 $('mpractice').onclick=()=>{pq=practiceKinds.map(question);pi=0;pscore=0;practiceRender();tab('practice')};
 showExplore();practiceRender();
 })();
-</script></body></html>
+</script><script src="student.js"></script></body></html>
