@@ -223,6 +223,6 @@ $('moptions').onclick=e=>{const b=e.target.closest('[data-choice]');if(!b)return
 $('msubmit').onclick=()=>{if(mselected<0)return;ms.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
 function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>ms[i]===q.correct).length;$('mscore').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Review and try again';let wrong=mq.map((q,i)=>({q,i})).filter(x=>ms[x.i]!==x.q.correct);$('mreview').innerHTML=wrong.length?'<strong>Review these concepts:</strong>'+wrong.map(x=>'<p><strong>'+x.q.topic+':</strong> '+x.q.q+'<br>Correct answer: '+x.q.opts[x.q.correct]+'. '+x.q.explain+'</p>').join(''):'All questions correct! You identified domain and range across different representations.';if(window.FunctionExplorerReporting)window.FunctionExplorerReporting.submit(mq.map((q,i)=>({skill:q.topic,prompt:q.q,response:q.opts[ms[i]],correctAnswer:q.opts[q.correct],correct:ms[i]===q.correct})));}
 $('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practiceQuestions=practiceTypes.map(makeQuestion);practiceRender();tab('practice')};
-exploreRender();practiceRender();
+practiceRender();
 })();
 </script><script src="student.js"></script></body></html>
