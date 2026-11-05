@@ -54,7 +54,7 @@ function equation(f,a,h,k){
  return 'g(x) = '+factor+fn+sign(k);
 }
 function transformed(f,a,h,k,x){let base=fams[f].fn(x-h);return Number.isFinite(base)?a*base+k:NaN}
-const X=x=>240+x*29,Y=y=>188-y*24;
+const X=x=>240+x*24,Y=y=>188-y*24;
 function drawGraph(f,a,h,k){
  let s='<svg viewBox="0 0 480 375" role="img" aria-label="Graph comparing parent and transformed functions">';
  s+='<defs><clipPath id="clip4"><rect width="480" height="375"/></clipPath></defs><rect width="480" height="375" fill="white"/>';
