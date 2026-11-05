@@ -10,7 +10,7 @@
 <div class="card stack"><h2>Investigation: Change the graph</h2>
 <label class="control">Choose a function<select id="family"><option value="segment">Line segment</option><option value="parabola">Restricted quadratic</option><option value="absolute">Restricted absolute value</option><option value="sqrt">Square root</option><option value="ray">Ray</option></select></label>
 <div id="endpointcontrols" class="two"><label class="control">Left endpoint<select id="leftend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label><label class="control">Right endpoint<select id="rightend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label></div>
-<div class="graph"><svg id="exploregraph" viewBox="0 0 420 350" role="img" aria-label="Coordinate graph with endpoints"></svg></div>
+<div class="graph" id="exploregraph"></div>
 <div><div class="row"><strong>Move along the curve</strong><strong id="xlabel">x = 0</strong></div><input id="xslider" aria-label="Select an x-value" type="range" step=".25" min="-3" max="3" value="0"></div>
 <div class="soft" id="pointinfo" aria-live="polite"></div>
 <div class="two"><div class="soft"><div class="eyebrow">Domain</div><div id="domain" class="math">?</div></div><div class="soft"><div class="eyebrow">Range</div><div id="range" class="math">?</div></div></div>
