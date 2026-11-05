@@ -41,7 +41,7 @@ footer{font-size:13px;color:#52697b;text-align:center;margin-top:35px}
  <div id="mquiz" class="hidden stack"><div class="row"><strong id="mcounter"></strong><span class="tag">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mq"></h2><div id="mopts"></div><button class="action primary" id="msubmit">Submit answer →</button></div></div>
  <div id="mresults" class="card stack hidden"><div style="text-align:center"><div class="eyebrow">Mastery check complete</div><div class="math" style="font-size:48px" id="mresult"></div><h2 id="mverdict"></h2><p id="msummary"></p></div><div class="soft" id="mreview"></div><button class="action primary" id="mretry">Try another mastery check</button><button class="action" id="mpractice">Review guided practice</button></div>
 </section>
-<footer>Function Explorer · Student practice tool · Results are shown on this device and are not submitted to your teacher.</footer>
+<footer>Function Explorer · Student practice tool · Questions are freshly generated each visit. Results are shown on this device and are not submitted to your teacher.</footer>
 </main><script>
 (function(){
 const $=id=>document.getElementById(id);
@@ -97,13 +97,82 @@ const questions=[
 ['Evaluating','If h(x) = x + 9, what is h(−12)?',['−3','3','21','−21'],0,'−12 + 9 = −3.']
 ];
 function renderOptions(target,q){$(target).innerHTML=q[2].map((o,i)=>'<button class="choice" data-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>').join('')}
+
+/* Independent, randomized question generation. No mastery item is drawn from guided practice. */
+const randomInt=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+function shuffle(items){const a=items.slice();for(let i=a.length-1;i>0;i--){const j=randomInt(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+function numericQuestion(topic,prompt,answer,why,distractors){
+ const nums=[answer,...distractors.filter(v=>v!==answer)];
+ let offset=1;
+ while(new Set(nums).size<4){nums.push(answer+offset*3);offset++}
+ const opts=shuffle([...new Set(nums)].slice(0,4));
+ return [topic,prompt,opts.map(String),opts.indexOf(answer),why];
+}
+function makeQuestion(type){
+ let a,b,x,y,answer,q;
+ switch(type){
+ case 0:
+  a=randomInt(2,6)*(Math.random()<.5?-1:1);b=randomInt(-9,9);x=randomInt(-6,6);answer=a*x+b;
+  return numericQuestion('Function notation','If f(x) = '+a+'x '+(b<0?'− '+(-b):'+ '+b')+', what is f('+x+')?',answer,
+   'Substitute '+x+' for x: '+a+'('+x+') '+(b<0?'− '+(-b):'+ '+b')+' = '+answer+'.',[a+b,answer+a,answer-a,answer+4]);
+ case 1:
+  a=randomInt(2,6)*(Math.random()<.5?-1:1);b=randomInt(-8,8);x=randomInt(-5,5);y=a*x+b;
+  return numericQuestion('Find an input','For f(x) = '+a+'x '+(b<0?'− '+(-b):'+ '+b')+', which input produces output '+y+'?',x,
+   'Set '+a+'x '+(b<0?'− '+(-b):'+ '+b')+' = '+y+' and solve to get x = '+x+'.',[y,x+1,x-2,x+3]);
+ case 2:
+  a=randomInt(1,5)*(Math.random()<.5?-1:1);b=randomInt(-7,7);x=randomInt(-3,3);answer=a*x+b;
+  return numericQuestion('Read a table','A function table contains ('+(x-2)+', '+(a*(x-2)+b)+'), ('+x+', '+answer+'), and ('+(x+2)+', '+(a*(x+2)+b)+'). What is f('+x+')?',answer,
+   'Look up the output paired with the input '+x+'.',[x,a*(x-2)+b,a*(x+2)+b,answer+2]);
+ case 3:
+  x=randomInt(-6,6);y=randomInt(-12,12);
+  return makeGraphQuestion();
+ case 4:
+  a=randomInt(2,5)*(Math.random()<.5?-1:1);b=randomInt(-8,8);x=randomInt(-4,3);answer=a*(x+2)+b;
+  return numericQuestion('Rate of change','A linear function has f('+x+') = '+(a*x+b)+' and f('+(x+1)+') = '+(a*(x+1)+b)+'. What is f('+(x+2)+')?',answer,
+   'The output changes by '+a+' whenever the input increases by 1.',[answer+a,answer-a,a*x+b,answer+2]);
+ case 5:
+  a=randomInt(2,6)*(Math.random()<.5?-1:1);b=randomInt(-8,8);
+  q='A linear function has f(0) = '+b+' and f(1) = '+(a+b)+'. Which equation matches?';
+  const correct='f(x) = '+a+'x '+(b<0?'− '+(-b):'+ '+b');
+  const options=shuffle([correct,'f(x) = '+b+'x '+(a<0?'− '+(-a):'+ '+a),'f(x) = '+(a+1)+'x '+(b<0?'− '+(-b):'+ '+b'),'f(x) = '+a+'x '+(b+1<0?'− '+(-(b+1)):'+ '+(b+1))]);
+  return ['Function rules',q,options,options.indexOf(correct),'f(0) gives the starting value '+b+', and the change from f(0) to f(1) is '+a+'.'];
+ case 6:
+  x=randomInt(-6,6);y=randomInt(-9,9);
+  return numericQuestion('Input vs. output','A function graph contains ('+x+', '+y+'). What input produces the output '+y+' at this point?',x,
+   'In (input, output), the first coordinate is the input.',[y,-x,x+2,x-3]);
+ default:
+  a=randomInt(2,6)*(Math.random()<.5?-1:1);b=randomInt(-8,8);x=randomInt(-4,4);answer=a*x+b;
+  return numericQuestion('Evaluate from a rule','A function multiplies its input by '+a+' and then '+(b<0?'subtracts '+(-b):'adds '+b)+'. What is the output for input '+x+'?',answer,
+   'Apply the rule: '+a+'('+x+') '+(b<0?'− '+(-b):'+ '+b')+' = '+answer+'.',[answer-a,answer+a,answer+5,answer-4]);
+ }
+}
+function generateSet(types,avoid){
+ const seen=new Set(avoid||[]);
+ return types.map(type=>{
+  let q,tries=0;
+  do{q=makeQuestion(type);tries++}while(seen.has(q[1])&&tries<50);
+  seen.add(q[1]);return q;
+ });
+}
+function makeGraphQuestion(){
+ let x=randomInt(-6,6),y=randomInt(-12,12);
+ const correct='f('+x+') = '+y;
+ const choices=[correct,'f('+y+') = '+x,'f('+x+') = '+(y+2),'f('+(x+1)+') = '+y];
+ const opts=shuffle(choices);
+ return ['Graph interpretation','The graph of y = f(x) passes through ('+x+', '+y+'). Which statement describes this point?',opts,opts.indexOf(correct),'The graph point ('+x+', '+y+') tells you f('+x+') = '+y+'.'];
+}
+const practiceQuestions=generateSet([0,1,2,3,4,5]);
+
 let pi=0,ps=0,pselected=-1,pan=false;
-function practice(){pselected=-1;pan=false;const q=questions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+function practice(){pselected=-1;pan=false;const q=practiceQuestions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
 $('popts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt||pan)return;pselected=+bt.dataset.choice;$('popts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===pselected))};
-$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=questions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=practiceQuestions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
 $('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100%';$('pcounter').textContent='Practice complete';$('ptopic').textContent='Practice summary';$('pq').textContent='You answered '+ps+' of 6 correctly. Continue to the mastery check or repeat practice.';$('popts').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
 let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
-function startMastery(){attempt++;const order=Array.from({length:questions.length},(_,i)=>(i+attempt*3)%questions.length);mq=order.slice(0,8).map(i=>questions[i]);mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function startMastery(){attempt++;
+ const practiced=practiceQuestions.map(q=>q[1]);
+ mq=generateSet(shuffle([0,1,2,3,4,5,6,7]),practiced).map(q=>q[0]==='Graph interpretation'?makeGraphQuestion():q);
+ mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
 function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
 $('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
 $('msubmit').onclick=()=>{if(mselected<0)return;manswers.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
