@@ -82,7 +82,7 @@ function makeQuestion(type){
   let start=askDomain?h:m.fn(h);opts=[answer,'('+start+', ∞)','['+start+', ∞)','(−∞, '+start+']'];
   explain='The graph continues to the right, so the upper bound is ∞. Check the endpoint symbol. Answer: '+answer+'.';visual=graph(m);
  }else if(type==='table'){
-  let x=rand(-5,-1),y=rand(1,5),output=rand(-4,2);let pairs=[[x,output],[x+2,output+3],[y,output+6]];
+  let x=rand(-5,-3),y=rand(1,5),output=rand(-4,2);let pairs=[[x,output],[x+2,output+3],[y,output+6]];
   askDomain=Math.random()<.5;topic='Domain and range from a table';q='Identify the '+(askDomain?'domain':'range')+' of this table.';
   const xs=pairs.map(p=>p[0]),ys=pairs.map(p=>p[1]),correct=askDomain?xs:ys;
   answer='{'+correct.join(', ')+'}';
