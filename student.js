@@ -36,7 +36,7 @@ if(!currentName())openSignIn();
 const labMatch=location.pathname.match(/lab(\d+)\.html$/i);
 if(!labMatch)return;
 const id=Number(labMatch[1]);
-const labNames={1:'Function Basics',2:'Is It a Function?',3:'Domain and Range'};
+const labNames={1:'Function Basics',2:'Is It a Function?',3:'Domain and Range',4:'Function Transformations'};
 const resultsEl=document.querySelector('#mresults');
 if(!resultsEl)return;
 const notice=document.createElement('div');notice.className='fx-notice';notice.setAttribute('role','status');notice.setAttribute('aria-live','polite');notice.style.cssText='border:1px solid #c4d8df;background:#eff7f8;border-radius:10px;padding:15px;margin-top:16px;font:15px/1.5 Arial,sans-serif';
