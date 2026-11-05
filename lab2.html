@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 2: Is It a Function? | Function Explorer</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;background:#f4f8fb;color:#172d40}*{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:22px 16px 65px}h1{font-size:30px;margin:5px 0}h2{font-size:22px;margin:0 0 9px}h3{font-size:18px;margin:0 0 10px}p{line-height:1.55}
+a{color:#087a83}button,input,select{font:inherit}button{cursor:pointer}.eyebrow{font-weight:700;color:#52697b;font-size:12px;letter-spacing:1px;text-transform:uppercase}.muted{color:#52697b}.tag{border-radius:20px;padding:6px 10px;border:1px solid #cfdde5;font-size:12px}.tabs{display:flex;gap:6px;background:#e5edf2;border-radius:12px;padding:6px;margin:19px 0}.tab{flex:1;border:0;border-radius:8px;padding:12px 4px;background:transparent;font-weight:700;color:#4d6578}.tab.active{background:#fff;color:#075b65;box-shadow:0 1px 4px #102d4026}
+.card{background:#fff;border-radius:14px;padding:20px;margin:13px 0;border:1px solid #d9e4eb}.soft{background:#eef5f8;border-radius:10px;padding:14px}.stack{display:grid;gap:14px}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.btn{border:1px solid #b9cbd4;border-radius:9px;padding:11px 16px;background:white;font-weight:700}.primary{color:white;background:#087a83;border-color:#087a83}.btn:disabled{opacity:.45;cursor:default}.choice{display:block;text-align:left;width:100%;background:white;padding:12px;border:1px solid #c5d7df;border-radius:9px;margin:6px 0}.choice.selected{border:2px solid #087a83;background:#e7f6f5}.hidden{display:none!important}.feedback{padding:13px;background:#eef5f8;border-left:4px solid #087a83;border-radius:7px}.feedback.warn{border-color:#b77927}.bar{height:8px;background:#e5edf2;border-radius:18px;overflow:hidden}.bar div{height:100%;background:#087a83}.graph{border:1px solid #d7e3e9;border-radius:10px;background:white;padding:7px}.graph svg{display:block;width:100%;max-width:420px;margin:auto;height:auto}
+table{border-collapse:collapse;width:100%;text-align:center}td,th{padding:9px;border-bottom:1px solid #dce8ee}th{background:#eef5f8}.box{border:1px solid #dce8ee;border-radius:10px;overflow:hidden}input[type=range]{width:100%;accent-color:#087a83}select{padding:10px;border:1px solid #b9cbd4;border-radius:9px;background:white;color:#172d40}footer{margin-top:30px;text-align:center;font-size:13px;color:#52697b}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.card{padding:14px}.row.responsive{flex-direction:column;align-items:stretch}}
+</style></head><body><main>
+<header class="row responsive"><div><div class="eyebrow"><a href="index.html">← Function Explorer</a> · Algebra 2</div><h1>Lab 2: Is It a Function?</h1><div class="muted">Explore relationships, test your ideas, and check your understanding.</div></div><span class="tag">Lab 2 · Functions</span></header>
+<nav class="tabs"><button class="tab active" data-stage="explore">1. Explore</button><button class="tab" data-stage="practice">2. Practice</button><button class="tab" data-stage="mastery">3. Mastery</button></nav>
+<section id="explore" class="stack">
+<div class="soft"><strong>Big idea:</strong> A relation is a function when <strong>every input has exactly one output.</strong> Different inputs may share the same output. Test your conjectures before revealing the answer.</div>
+<div class="card stack"><h2>Investigation A: Input-output mappings</h2>
+<div class="row responsive"><label for="mapcase"><strong>Choose a relationship</strong></label><select id="mapcase"><option value="0">Mapping A</option><option value="1">Mapping B</option><option value="2">Mapping C</option><option value="3">Mapping D</option></select></div>
+<div class="graph"><svg id="mapsvg" viewBox="0 0 460 235" role="img" aria-label="Input-output mapping diagram"></svg></div>
+<p class="muted" style="margin:0">Trace each arrow. Does every input point to exactly one output?</p><div class="row responsive"><button class="btn" id="mapyes">I predict: Function</button><button class="btn" id="mapno">I predict: Not a function</button></div><div id="mapfeedback" aria-live="polite"></div></div>
+<div class="card stack"><h2>Investigation B: Vertical line test</h2>
+<div class="row responsive"><label for="graphcase"><strong>Choose a graph</strong></label><select id="graphcase"><option value="line">Graph A: Line</option><option value="parabola">Graph B: Parabola</option><option value="sideways">Graph C: Sideways parabola</option><option value="circle">Graph D: Circle</option></select></div>
+<div class="graph"><svg id="exploregraph" viewBox="0 0 380 340" role="img" aria-label="Graph with a movable vertical line"></svg></div>
+<label for="scanner"><strong>Move the vertical test line</strong> <span id="scanlabel">x = 0</span></label><input id="scanner" type="range" min="-4" max="4" step="0.25" value="0"><div class="soft" id="intersectiontext" aria-live="polite"></div>
+<div class="row responsive"><button class="btn" id="graphyes">I predict: Function</button><button class="btn" id="graphno">I predict: Not a function</button></div><div id="graphfeedback" aria-live="polite"></div></div>
+<div class="card stack"><h2>Investigation C: Tables and ordered pairs</h2>
+<p class="muted" style="margin:0">Look for a repeated input. If one input is paired with two different outputs, the relation is not a function.</p><div class="row responsive"><label for="tablecase"><strong>Choose a set</strong></label><select id="tablecase"><option value="0">Set A</option><option value="1">Set B</option><option value="2">Set C</option><option value="3">Set D</option></select></div>
+<div id="exploretable" class="box"></div><div class="row responsive"><button class="btn" id="tableyes">I predict: Function</button><button class="btn" id="tableno">I predict: Not a function</button></div><div id="tablefeedback" aria-live="polite"></div></div>
+<button class="btn primary" id="topractice">Continue to guided practice →</button></section>
+<section id="practice" class="hidden stack"><div class="soft">Six guided questions cover mapping diagrams, tables, ordered pairs, and actual graphs. You will get explanations after each answer.</div><div class="row"><strong id="pcounter"></strong><span id="pscore"></span></div><div class="bar"><div id="pbar" style="width:0"></div></div><div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pquestion"></h2><div id="pvisual"></div><div id="poptions"></div><div id="pfeedback" aria-live="polite"></div><button class="btn primary" id="pcheck">Check answer</button><button class="btn primary hidden" id="pnext">Next question →</button></div><button class="btn" id="tomastery">Go to mastery check →</button></section>
+<section id="mastery" class="hidden stack"><div id="mstart" class="card stack" style="text-align:center"><h2>Mastery Check</h2><p>Eight new questions. Expect graphs, mappings, tables, and ordered pairs. No hints while you're answering.</p><div class="soft"><strong>Target: 7 of 8 correct</strong></div><button class="btn primary" id="mbegin">Start mastery check</button></div>
+<div id="mquiz" class="hidden stack"><div class="row"><strong id="mcounter"></strong><span class="tag">Independent check</span></div><div class="bar"><div id="mbar" style="width:0"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mquestion"></h2><div id="mvisual"></div><div id="moptions"></div><button class="btn primary" id="msubmit">Submit answer →</button></div></div>
+<div id="mresults" class="hidden card stack"><div style="text-align:center"><div class="eyebrow">Your mastery result</div><div id="mscore" style="font-size:48px;font-weight:750"></div><h2 id="mverdict"></h2></div><div id="mreview" class="soft"></div><button class="btn primary" id="mretry">Try another randomized check</button><button class="btn" id="mpractice">Review practice</button></div></section>
+<footer>Function Explorer · Lab 2 · New questions are generated for each visit and mastery attempt. Scores are not sent to your teacher.</footer></main>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),rand=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function shuffle(xs){const a=xs.slice();for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const maps=[
+ {pairs:[[1,2],[2,4],[3,4]],valid:true,reason:'Each input has exactly one output. It is fine for inputs 2 and 3 to share output 4.'},
+ {pairs:[[1,2],[1,5],[3,4]],valid:false,reason:'Input 1 points to both 2 and 5. One input has two different outputs.'},
+ {pairs:[[0,4],[2,4],[5,4]],valid:true,reason:'Every input has exactly one output, even though all three outputs are 4.'},
+ {pairs:[[-2,1],[0,3],[2,5],[2,5]],valid:true,reason:'Repeating the exact same input-output pair does not break the function rule.'}
+];
+const tables=[
+ {pairs:[[1,3],[2,5],[3,7],[4,9]],valid:true,reason:'No input is paired with more than one output.'},
+ {pairs:[[2,5],[2,8],[3,9],[4,11]],valid:false,reason:'Input 2 has both output 5 and output 8.'},
+ {pairs:[[-2,0],[0,0],[2,0],[4,0]],valid:true,reason:'Different inputs can all have output 0.'},
+ {pairs:[[1,4],[3,6],[1,4],[5,8]],valid:true,reason:'A duplicate ordered pair is still consistent: input 1 always gives 4.'}
+];
+function mappingSVG(pairs){
+ const inputs=[...new Set(pairs.map(p=>p[0]))],outputs=[...new Set(pairs.map(p=>p[1]))];
+ const position=(arr,v)=>55+arr.indexOf(v)*(125/Math.max(1,arr.length-1));
+ let s='<rect width="460" height="235" fill="white"/><text x="97" y="26" font-weight="bold" fill="#24465c" text-anchor="middle">Inputs</text><text x="362" y="26" font-weight="bold" fill="#24465c" text-anchor="middle">Outputs</text><rect x="55" y="36" width="88" height="165" rx="35" fill="#eef5f8" stroke="#b6d2dc"/><rect x="315" y="36" width="95" height="165" rx="35" fill="#eef5f8" stroke="#b6d2dc"/>';
+ pairs.forEach(([x,y],i)=>{const y1=position(inputs,x),y2=position(outputs,y);s+='<path d="M123 '+y1+' Q230 '+(y1+(i%2?12:-12))+' 338 '+y2+'" stroke="#087a83" stroke-width="2.2" fill="none" marker-end="url(#arr)"/>'});
+ s+='<defs><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6" fill="none" stroke="#087a83" stroke-width="1.2"/></marker></defs>';
+ inputs.forEach(n=>s+='<circle cx="98" cy="'+position(inputs,n)+'" r="18" fill="white" stroke="#a5bdca"/><text x="98" y="'+(position(inputs,n)+5)+'" text-anchor="middle" font-weight="bold" fill="#213e53">'+n+'</text>');
+ outputs.forEach(n=>s+='<circle cx="365" cy="'+position(outputs,n)+'" r="18" fill="white" stroke="#a5bdca"/><text x="365" y="'+(position(outputs,n)+5)+'" text-anchor="middle" font-weight="bold" fill="#213e53">'+n+'</text>');
+ return s;
+}
+function tableHTML(pairs){return '<table><thead><tr><th>Input x</th><th>Output y</th></tr></thead><tbody>'+pairs.map(p=>'<tr><td>'+p[0]+'</td><td>'+p[1]+'</td></tr>').join('')+'</tbody></table>'}
+const X=x=>190+x*35,Y=y=>170-y*35;
+function getIntersections(kind,x){
+ if(kind==='line')return [0.5*x+1];
+ if(kind==='parabola')return [x*x/4-2];
+ if(kind==='sideways')return x<0?[]:x===0?[0]:[-Math.sqrt(2*x),Math.sqrt(2*x)];
+ if(kind==='circle')return Math.abs(x)>3?[]:Math.abs(x)===3?[0]:[-Math.sqrt(9-x*x),Math.sqrt(9-x*x)];
+ return [];
+}
+function graphSVG(kind,scan,withLine){
+ let s='<rect x="0" y="0" width="380" height="340" fill="white"/>';
+ for(let n=-5;n<=5;n++){s+='<path d="M'+X(n)+' 0 V340 M0 '+Y(n)+' H380" stroke="#e2e9ef" stroke-width="1" fill="none"/>'}
+ s+='<path d="M0 '+Y(0)+' H380 M'+X(0)+' 0 V340" fill="none" stroke="#647e8c" stroke-width="1.8"/>';
+ for(let n=-4;n<=4;n+=2)if(n)s+='<text x="'+X(n)+'" y="'+(Y(0)+16)+'" text-anchor="middle" font-size="11" fill="#476070">'+n+'</text><text x="'+(X(0)-8)+'" y="'+(Y(n)+4)+'" text-anchor="end" font-size="11" fill="#476070">'+n+'</text>';
+ s+='<text x="365" y="'+(Y(0)-9)+'" fill="#476070">x</text><text x="'+(X(0)+9)+'" y="18" fill="#476070">y</text>';
+ let parts=[];
+ if(kind==='line'||kind==='parabola')for(let t=-5;t<=5;t+=.025){const v=kind==='line'?.5*t+1:t*t/4-2;parts.push([t,v])}
+ if(kind==='sideways')for(let t=-4.5;t<=4.5;t+=.025)parts.push([t*t/2,t]);
+ if(kind==='circle')for(let t=0;t<=Math.PI*2+.02;t+=.025)parts.push([3*Math.cos(t),3*Math.sin(t)]);
+ const pts=parts.map(([x,y])=>X(x)+','+Y(y)).join(' ');
+ s+='<defs><clipPath id="plotClip"><rect x="0" y="0" width="380" height="340"/></clipPath></defs><polyline points="'+pts+'" fill="none" stroke="#087a83" stroke-width="3" clip-path="url(#plotClip)"/>';
+ if(withLine){s+='<line x1="'+X(scan)+'" x2="'+X(scan)+'" y1="0" y2="340" stroke="#b77529" stroke-width="2.8" stroke-dasharray="7 5"/>';getIntersections(kind,scan).forEach(y=>s+='<circle cx="'+X(scan)+'" cy="'+Y(y)+'" r="6" fill="#c4812d" stroke="white" stroke-width="2"/>')}
+ return s;
+}
+function showExplore(){
+ const mi=+$( 'mapcase').value,ti=+$('tablecase').value,kind=$('graphcase').value,scan=+$('scanner').value;
+ $('mapsvg').innerHTML=mappingSVG(maps[mi].pairs);
+ $('exploretable').innerHTML=tableHTML(tables[ti].pairs);
+ $('exploregraph').innerHTML=graphSVG(kind,scan,true);
+ $('scanlabel').textContent='x = '+scan;
+ const ys=getIntersections(kind,scan);
+ $('intersectiontext').textContent='At this x-value the vertical line intersects the relation '+ys.length+' time'+(ys.length===1?'':'s')+'. '+(ys.length>1?'This proves it is NOT a function.':ys.length===1?'One intersection here. Try other x-values before deciding.':'No intersections here. Move the test line to investigate other inputs.');
+}
+function fb(id,ok,reason){$(id).innerHTML='<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct!':'Not quite.')+'</strong> '+reason+'</div>'}
+function clearExplore(section){$(section).innerHTML=''}
+['mapcase','tablecase','graphcase','scanner'].forEach(id=>$(id).addEventListener('input',()=>{showExplore();if(id==='mapcase')clearExplore('mapfeedback');if(id==='tablecase')clearExplore('tablefeedback');if(id==='graphcase')clearExplore('graphfeedback')}));
+$('mapyes').onclick=()=>{const m=maps[+$('mapcase').value];fb('mapfeedback',m.valid,m.reason)};
+$('mapno').onclick=()=>{const m=maps[+$('mapcase').value];fb('mapfeedback',!m.valid,m.reason)};
+$('tableyes').onclick=()=>{const m=tables[+$('tablecase').value];fb('tablefeedback',m.valid,m.reason)};
+$('tableno').onclick=()=>{const m=tables[+$('tablecase').value];fb('tablefeedback',!m.valid,m.reason)};
+function graphValid(k){return k==='line'||k==='parabola'}
+function graphExplanation(k){return graphValid(k)?'Every vertical line intersects this graph at most once.':'At some input values, a vertical line crosses the graph twice. That input would have two outputs.'}
+$('graphyes').onclick=()=>{const k=$('graphcase').value;fb('graphfeedback',graphValid(k),graphExplanation(k))};
+$('graphno').onclick=()=>{const k=$('graphcase').value;fb('graphfeedback',!graphValid(k),graphExplanation(k))};
+function tab(t){['explore','practice','mastery'].forEach(id=>$(id).classList.toggle('hidden',id!==t));document.querySelectorAll('[data-stage]').forEach(b=>b.classList.toggle('active',b.dataset.stage===t));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>tab(b.dataset.stage));
+$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
+function question(kind){
+ let pairs,valid,reason,typ,prompt,visual=null,yes='Function',no='Not a function';
+ if(kind==='mapping'){
+ const a=rand(-5,4),b=a+rand(1,4),c=b+rand(1,4),v=rand(-5,4),w=v+rand(1,4);
+ valid=Math.random()<.5;
+ pairs=valid?[[a,v],[b,v],[c,w]]:[[a,v],[a,w],[c,v]];
+ reason=valid?'Each input has only one output. Sharing an output is allowed.':'The same input '+a+' is paired with two distinct outputs.';
+ typ='Mapping diagram';prompt='Is the relationship shown by this mapping a function?';visual={kind:'map',pairs};
+ }else if(kind==='table'||kind==='pairs'){
+ const a=rand(-4,2),b=a+rand(1,4),c=b+rand(1,4),v=rand(-5,5),w=v+rand(1,4);
+ valid=Math.random()<.5;
+ pairs=valid?[[a,v],[b,w],[c,w]]:[[a,v],[b,w],[a,w]];
+ reason=valid?'Every input is associated with just one output.':'The repeated input '+a+' gives different outputs ('+v+' and '+w+').';
+ typ=kind==='table'?'Table relationships':'Ordered pairs';
+ prompt=kind==='table'?'Does this table represent a function?':'Do these ordered pairs represent a function?';
+ visual=kind==='table'?{kind:'table',pairs}:null;
+ if(kind==='pairs')prompt+=' '+pairs.map(p=>'('+p[0]+', '+p[1]+')').join(', ');
+ }else if(kind==='graph'){
+ const variants=['line','parabola','sideways','circle'],g=variants[rand(0,3)];
+ valid=graphValid(g);reason=graphExplanation(g);typ='Vertical line test';prompt='Does this graph represent y as a function of x?';visual={kind:'graph',type:g};
+ }else if(kind==='definition'){
+ valid=Math.random()<.5;typ='Function concept';
+ if(valid){prompt='Several different inputs all have the same output. Can this still be a function?';reason='Yes. Each input can have one output even when outputs repeat.';yes='Yes';no='No'}
+ else{prompt='One input has two different outputs. Can this relation be a function?';reason='No. A single input cannot have two different outputs.';yes='Yes';no='No'}
+ }else{
+ const g=rand(-5,5);valid=Math.random()<.5;typ='Interpreting inputs';
+ prompt=valid?'A table lists ('+g+', 4) twice. Does this automatically mean the relation is not a function?':'A relation contains both ('+g+', 2) and ('+g+', 5). Is it a function?';
+ if(valid){yes='No';no='Yes';valid=true;reason='Repeating the exact same ordered pair is allowed.'}
+ else{reason='The same input '+g+' has two different outputs.'}
+ }
+ const opts=[yes,no];const answer=valid?0:1;
+ return {typ,prompt,opts,answer,reason,visual};
+}
+function visual(q){
+ if(!q.visual)return '';
+ const d=q.visual;
+ if(d.kind==='map')return '<div class="graph"><svg viewBox="0 0 460 235" role="img" aria-label="Mapping diagram">'+mappingSVG(d.pairs)+'</svg></div>';
+ if(d.kind==='table')return '<div class="box">'+tableHTML(d.pairs)+'</div>';
+ if(d.kind==='graph')return '<div class="graph"><svg viewBox="0 0 380 340" role="img" aria-label="Coordinate graph">'+graphSVG(d.type,0,false)+'</svg></div>';
+ return '';
+}
+function options(container,q){$(container).innerHTML=q.opts.map((o,i)=>'<button class="choice" data-option="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>').join('')}
+const practiceKinds=['mapping','table','pairs','graph','definition','graph'];let pq=practiceKinds.map(question),pi=0,pscore=0,pselect=-1,panswered=false;
+function practiceRender(){let q=pq[pi];pselect=-1;panswered=false;$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=pscore+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q.typ;$('pquestion').textContent=q.prompt;$('pvisual').innerHTML=visual(q);options('poptions',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish guided practice →':'Next question →'}
+$('poptions').onclick=e=>{const b=e.target.closest('[data-option]');if(!b||panswered)return;pselect=+b.dataset.option;$('poptions').querySelectorAll('button').forEach((it,i)=>it.classList.toggle('selected',i===pselect))};
+$('pcheck').onclick=()=>{if(pselect<0)return;const q=pq[pi],correct=pselect===q.answer;panswered=true;if(correct)pscore++;fb('pfeedback',correct,q.reason);$('pscore').textContent=pscore+' correct';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practiceRender()}else{$('pcounter').textContent='Practice complete';$('pbar').style.width='100%';$('pquestion').textContent='You answered '+pscore+' out of 6 correctly. Continue to mastery when ready.';$('pvisual').innerHTML='';$('poptions').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let mq=[],mi=0,ma=[],mselected=-1;
+function beginMastery(){
+ const kinds=shuffle(['mapping','mapping','table','pairs','graph','graph','definition','special']);
+ mq=kinds.map(question);mi=0;ma=[];
+ $('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');masteryRender();
+}
+function masteryRender(){const q=mq[mi];mselected=-1;$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q.typ;$('mquestion').textContent=q.prompt;$('mvisual').innerHTML=visual(q);options('moptions',q);$('msubmit').textContent=mi===7?'Finish mastery check →':'Submit answer →'}
+$('moptions').onclick=e=>{const b=e.target.closest('[data-option]');if(!b)return;mselected=+b.dataset.option;$('moptions').querySelectorAll('button').forEach((it,i)=>it.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;ma.push(mselected);if(mi<7){mi++;masteryRender()}else showResults()};
+function showResults(){
+ $('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');
+ const count=mq.filter((q,i)=>q.answer===ma[i]).length;
+ $('mscore').textContent=count+' / 8';$('mverdict').textContent=count>=7?'Mastery target reached':'Review and try again';
+ const missed=mq.map((q,i)=>({q,i})).filter(o=>o.q.answer!==ma[o.i]);
+ $('mreview').innerHTML=missed.length?'<strong>Questions to revisit:</strong>'+missed.map(o=>'<p><strong>'+o.q.typ+':</strong> '+o.q.prompt+'<br>Correct response: '+o.q.opts[o.q.answer]+'. '+o.q.reason+'</p>').join(''):'All eight answers correct. You distinguished functions from non-functions in multiple representations.';
+}
+$('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;
+$('mpractice').onclick=()=>{pq=practiceKinds.map(question);pi=0;pscore=0;practiceRender();tab('practice')};
+showExplore();practiceRender();
+})();
+</script></body></html>
