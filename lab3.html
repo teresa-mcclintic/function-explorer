@@ -11,16 +11,20 @@
 </div>
 <nav class="tabs" aria-label="Learning stages"><button class="tab active" data-tab="explore">1. Explore</button><button class="tab" data-tab="practice">2. Practice</button><button class="tab" data-tab="mastery">3. Mastery</button></nav>
 <section id="explore" class="stack">
-<div class="soft"><strong>Big idea:</strong> The <strong>domain</strong> contains all allowed x-values (inputs). The <strong>range</strong> contains all possible y-values (outputs). Read a graph left-to-right for domain and bottom-to-top for range.</div>
-<div class="card stack"><h2>Investigation: Change the graph</h2>
-<label class="control">Choose a function<select id="family"><option value="segment">Line segment</option><option value="parabola">Restricted quadratic</option><option value="absolute">Restricted absolute value</option><option value="sqrt">Square root</option><option value="ray">Ray</option></select></label>
-<div id="endpointcontrols" class="two"><label class="control">Left endpoint<select id="leftend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label><label class="control">Right endpoint<select id="rightend"><option value="closed">Closed • included</option><option value="open">Open ○ excluded</option></select></label></div>
-<div class="graph" id="exploregraph"></div>
-<div><div class="row"><strong>Move along the curve</strong><strong id="xlabel">x = 0</strong></div><input id="xslider" aria-label="Select an x-value" type="range" step=".25" min="-3" max="3" value="0"></div>
-<div class="soft" id="pointinfo" aria-live="polite"></div>
-<div class="two"><div class="soft"><div class="eyebrow">Domain</div><div id="domain" class="math">?</div></div><div class="soft"><div class="eyebrow">Range</div><div id="range" class="math">?</div></div></div>
-<button class="btn primary" id="reveal">Reveal domain and range</button><p id="explain" class="muted" style="margin:0"></p></div>
-<div class="soft"><strong>Try this:</strong> Select the line segment, then change one endpoint from closed to open. Predict which bracket in the domain and range notation changes. Next, explore the quadratic—its range is controlled by the vertex rather than just the left and right endpoints.</div>
+<div class="soft"><strong>Big idea:</strong> The <strong>domain</strong> is every possible x-value; the <strong>range</strong> is every possible y-value. Study each graph, build your answers, and check them before continuing.</div>
+<div class="card stack">
+<div class="row mobile"><div><div class="eyebrow" id="graphcount">Graph 1 of 12</div><h2 id="graphtitle">Domain and range challenge</h2></div><span class="pill" id="exploreprogress">0 of 12 completed</span></div>
+<div class="row mobile"><label class="control" style="flex:1"><strong>Select a graph</strong><select id="graphselect" aria-label="Choose a graph"></select></label><button class="btn" id="nextgraph">Next graph →</button></div>
+<div class="graph" id="challengegraph"></div>
+<p id="graphinstruction" class="muted" style="margin:0">Look left to right for domain and bottom to top for range.</p>
+<div class="two">
+ <div class="soft stack"><strong>Domain (x-values)</strong><div id="dbuilder"></div><div id="dfeedback" aria-live="polite"></div></div>
+ <div class="soft stack"><strong>Range (y-values)</strong><div id="rbuilder"></div><div id="rfeedback" aria-live="polite"></div></div>
+</div>
+<div class="row mobile" style="justify-content:center;flex-wrap:wrap"><button id="checkexplore" class="btn primary">Check my answers</button><button id="hint" class="btn">Give me a hint</button><button id="reveal" class="btn">Show correct answers</button></div>
+<div id="hintcontent" class="soft hidden"></div>
+<div class="soft" style="font-size:14px"><strong>Notation reminder:</strong> A bracket <strong>[ ]</strong> includes an endpoint; a parenthesis <strong>( )</strong> excludes it. Infinity is always paired with a parenthesis. Choose <strong>Single value</strong> for a horizontal graph's range, or <strong>Set of values</strong> for separate plotted points.</div>
+</div>
 <button class="btn primary" id="topractice">Continue to guided practice →</button></section>
 <section id="practice" class="stack hidden"><div class="soft">Six questions with feedback, including graphs, endpoint notation, and tables. Practice questions are separate from the mastery check.</div><div class="row"><strong id="pcounter"></strong><span id="pscore" class="pill"></span></div><div class="bar"><div id="pbar"></div></div><div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pquestion"></h2><div id="pvisual"></div><div id="poptions"></div><div id="pfeedback" aria-live="polite"></div><button class="btn primary" id="pcheck">Check answer</button><button class="btn primary hidden" id="pnext">Next question →</button></div><button class="btn" id="tomastery">Go to mastery check →</button></section>
 <section id="mastery" class="stack hidden"><div class="card stack" id="mstart" style="text-align:center"><h2>Mastery check</h2><p>Eight fresh questions covering graphs, tables, open and closed endpoints, domain, range, and interval notation. No hints during the check.</p><div class="soft"><strong>Target: 7 of 8 correct</strong></div><button class="btn primary" id="mbegin">Start mastery check</button></div><div class="stack hidden" id="mquiz"><div class="row"><strong id="mcounter"></strong><span class="pill">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mquestion"></h2><div id="mvisual"></div><div id="moptions"></div><button class="btn primary" id="msubmit">Submit answer →</button></div></div><div class="card stack hidden" id="mresults"><div style="text-align:center"><div class="eyebrow">Mastery result</div><div style="font-size:48px;font-weight:bold" id="mscore"></div><h2 id="mverdict"></h2></div><div id="mreview" class="soft"></div><button class="btn primary" id="mretry">Try a new mastery check</button><button class="btn" id="mpractice">Review guided practice</button></div></section>
@@ -53,19 +57,118 @@ function graph(m,highlight=null){
  if(highlight!==null){let y=m.fn(highlight);s+='<path d="M'+X(highlight)+' 175V'+Y(y)+' H210" stroke="#c77c29" stroke-width="2" stroke-dasharray="5 4" fill="none"/><circle cx="'+X(highlight)+'" cy="'+Y(y)+'" r="6" fill="#c77c29" stroke="white" stroke-width="2"/>'}
  return s+'</svg>';
 }
-let exposed=false;
-function getExploreModel(){let f=$('family').value;return f==='segment'?model(f,{l:-3,r:3,lc:$('leftend').value==='closed',rc:$('rightend').value==='closed'}):model(f)}
-function exploreRender(){
- let m=getExploreModel();$('endpointcontrols').classList.toggle('hidden',m.type!=='segment');
- let slider=$('xslider');slider.min=m.l;slider.max=m.r;let x=Number(slider.value);if(x<m.l||x>m.r){x=m.l;slider.value=x}
- $('exploregraph').innerHTML=graph(m,x);$('xlabel').textContent='x = '+x;
- const notIncluded=(x===m.l&&!m.lc)||(x===m.r&&!m.rc);
- $('pointinfo').textContent='At x = '+x+', the graph '+(notIncluded?'approaches':'has')+' y = '+Math.round(m.fn(x)*100)/100+'. '+(notIncluded?'This endpoint is OPEN, so that exact point is excluded.':'');
- $('domain').textContent=exposed?m.domain:'?';$('range').textContent=exposed?m.range:'?';$('reveal').textContent=exposed?'Hide domain and range':'Reveal domain and range';$('explain').textContent=exposed?m.desc:'Predict first, then reveal the interval notation.';
+
+const graphChallenges=[
+ {name:'Increasing line segment',mode:'curve',lo:-3,hi:2,lc:true,rc:true,fn:x=>x+1,domain:'[-3, 2]',range:'[-2, 3]',hint:'The smallest and largest x-values are at the endpoints. Here the output increases from left to right.'},
+ {name:'One open endpoint',mode:'curve',lo:-4,hi:3,lc:false,rc:true,fn:x=>-x,domain:'(-4, 3]',range:'[-3, 4)',hint:'An open circle excludes its x-value and, for this decreasing line, its y-value as well.'},
+ {name:'Horizontal segment',mode:'curve',lo:-4,hi:3,lc:false,rc:true,fn:x=>2,domain:'(-4, 3]',range:'{2}',hint:'Many x-values, but only one unique y-value. Select Single value for range.'},
+ {name:'Quadratic on a closed interval',mode:'curve',lo:-2,hi:2,lc:true,rc:true,fn:x=>x*x-2,domain:'[-2, 2]',range:'[-2, 2]',hint:'The vertex at the bottom is part of the graph. Both endpoints are included.'},
+ {name:'Absolute value graph',mode:'curve',lo:-3,hi:3,lc:true,rc:true,fn:x=>Math.abs(x)-1,domain:'[-3, 3]',range:'[-1, 2]',hint:'The vertex supplies the lowest output. The endpoints supply the highest outputs.'},
+ {name:'Square-root curve',mode:'right',lo:-2,hi:5,lc:true,fn:x=>Math.sqrt(x+2)-1,domain:'[-2, ∞)',range:'[-1, ∞)',hint:'The graph begins at a closed point and continues indefinitely upward and rightward.'},
+ {name:'Decreasing ray',mode:'right',lo:-3,hi:5,lc:false,fn:x=>-x-1,domain:'(-3, ∞)',range:'(-∞, 2)',hint:'The output goes down forever. The open starting point excludes the highest output.'},
+ {name:'Increasing ray',mode:'right',lo:-3,hi:5,lc:true,fn:x=>x+1,domain:'[-3, ∞)',range:'[-2, ∞)',hint:'The closed starting point gives the smallest x and y. The ray extends forever.'},
+ {name:'Line with arrows at both ends',mode:'both',lo:-6,hi:6,fn:x=>-x+1,domain:'(-∞, ∞)',range:'(-∞, ∞)',hint:'The arrows mean there is no greatest or least input or output.'},
+ {name:'Separate plotted points',mode:'discrete',points:[[-3,1],[-1,-2],[2,3],[4,1]],domain:'{-3, -1, 2, 4}',range:'{-2, 1, 3}',hint:'Select Set of values. List the x-coordinates for domain and the distinct y-coordinates for range.'},
+ {name:'Parabola with open endpoints',mode:'curve',lo:-2,hi:2,lc:false,rc:false,fn:x=>x*x-1,domain:'(-2, 2)',range:'[-1, 3)',hint:'The vertex is included, so the minimum is included. Both endpoints are open, so the highest output is excluded.'},
+ {name:'A restricted decreasing line',mode:'curve',lo:-2,hi:4,lc:true,rc:false,fn:x=>-x+2,domain:'[-2, 4)',range:'(-2, 4]',hint:'The leftmost point is closed, and the rightmost point is open. The decreasing line reverses which endpoint controls the upper and lower range bounds.'}
+];
+const stepsDone=new Set();
+const optsBound=[...Array(15)].map((_,i)=>String(i-7));
+function parseAnswer(v){
+ v=v.trim().replace(/−/g,'-').replace(/\s/g,'').replace(/infinity|inf|∞/gi,'∞');
+ if(v.startsWith('{')&&v.endsWith('}'))return {type:'set',values:v.slice(1,-1).split(',').filter(Boolean).sort((a,b)=>Number(a)-Number(b))};
+ const match=v.match(/^([\[(])(-?\d+|-∞),(-?\d+|∞)([\])])$/);
+ if(match)return {type:'interval',left:match[2],right:match[3],lc:match[1]==='[',rc:match[4]===']'};
+ return null;
 }
-$('family').onchange=()=>{exposed=false;$('xslider').value=0;exploreRender()};
-['leftend','rightend','xslider'].forEach(k=>$(k).oninput=exploreRender);
-$('reveal').onclick=()=>{exposed=!exposed;exploreRender()};
+function sameAnswer(actual,expected){
+ const a=parseAnswer(actual),b=parseAnswer(expected);
+ if(!a||!b||a.type!==b.type)return false;
+ if(a.type==='set')return a.values.length===b.values.length&&a.values.every((v,i)=>v===b.values[i]);
+ return a.left===b.left&&a.right===b.right&&a.lc===b.lc&&a.rc===b.rc;
+}
+function selectHTML(id,values,selected){return '<select id="'+id+'" style="width:100%;padding:8px;border-radius:8px;border:1px solid #bfced7;background:white;color:#172d40">'+values.map(o=>'<option value="'+o.value+'"'+(o.value===selected?' selected':'')+'>'+o.label+'</option>').join('')+'</select>'}
+function buildAnswer(prefix){
+ const container=$(prefix+'builder');
+ container.innerHTML='<div class="stack"><label class="control">Answer type'+selectHTML(prefix+'type',[{value:'interval',label:'Interval'},{value:'single',label:'Single value'},{value:'set',label:'Set of values'}],'interval')+'</label><div id="'+prefix+'fields"></div></div>';
+ $(prefix+'type').onchange=()=>renderFields(prefix);
+ renderFields(prefix);
+}
+function renderFields(prefix){
+ const type=$(prefix+'type').value;
+ const vals=optsBound.map(n=>({value:n,label:n}));
+ if(type==='interval'){
+ const lower=[{value:'-∞',label:'−∞'},...vals],upper=[...vals,{value:'∞',label:'∞'}];
+ $(prefix+'fields').innerHTML='<div class="two" style="gap:9px"><label class="control">Left bound'+selectHTML(prefix+'left',lower,'-3')+'</label><label class="control">Right bound'+selectHTML(prefix+'right',upper,'3')+'</label><label class="control">Left endpoint'+selectHTML(prefix+'lc',[{value:'[',label:'[ Included'},{value:'(',label:'( Excluded'}],'[')+'</label><label class="control">Right endpoint'+selectHTML(prefix+'rc',[{value:']',label:'] Included'},{value:')',label:') Excluded'}],']')+'</label></div>';
+ }else if(type==='single'){
+ $(prefix+'fields').innerHTML='<label class="control">Output or input value'+selectHTML(prefix+'single',vals,'0')+'</label>';
+ }else{
+ $(prefix+'fields').innerHTML='<label class="control">Choose all values that appear in the '+(prefix==='d'?'domain':'range')+'</label><div id="'+prefix+'values" style="display:flex;gap:5px;flex-wrap:wrap">'+optsBound.map(n=>'<label style="border:1px solid #ccdce4;border-radius:7px;background:white;padding:6px 8px"><input type="checkbox" value="'+n+'"> '+n+'</label>').join('')+'</div>';
+ }
+}
+function collectAnswer(prefix){
+ const type=$(prefix+'type').value;
+ if(type==='single')return '{'+$(prefix+'single').value+'}';
+ if(type==='set'){const vals=[...$(prefix+'values').querySelectorAll('input:checked')].map(n=>n.value);return '{'+vals.join(', ')+'}'}
+ const l=$(prefix+'left').value,r=$(prefix+'right').value;
+ const lc=l==='-∞'?'(':$(prefix+'lc').value,rc=r==='∞'?')':$(prefix+'rc').value;
+ return lc+l+', '+r+rc;
+}
+function setAnswer(prefix,answer){
+ const a=parseAnswer(answer);if(!a)return;
+ const type=a.type==='interval'?'interval':a.values.length===1?'single':'set';
+ $(prefix+'type').value=type;renderFields(prefix);
+ if(type==='interval'){$(prefix+'left').value=a.left;$(prefix+'right').value=a.right;$(prefix+'lc').value=a.lc?'[':'(' ;$(prefix+'rc').value=a.rc?']':')'}
+ if(type==='single')$(prefix+'single').value=a.values[0];
+ if(type==='set'){$(prefix+'values').querySelectorAll('input').forEach(inp=>inp.checked=a.values.includes(inp.value))}
+}
+function challengeSVG(c){
+ const XX=x=>210+29*x,YY=y=>175-23*y;
+ let svg='<svg viewBox="0 0 420 350" role="img" aria-label="Graph '+c.name+'">';
+ svg+='<rect width="420" height="350" fill="white"/>';
+ for(let i=-7;i<=7;i++)svg+='<path d="M'+XX(i)+' 0V350 M0 '+YY(i)+' H420" stroke="#e1eaf0" stroke-width=".9" fill="none"/>';
+ svg+='<path d="M0 175H420 M210 0V350" stroke="#657e8c" stroke-width="1.8" fill="none"/>';
+ for(let i=-6;i<=6;i+=1)if(i)svg+='<text x="'+XX(i)+'" y="190" font-size="10" text-anchor="middle" fill="#52697b">'+i+'</text><text x="201" y="'+(YY(i)+3)+'" font-size="10" text-anchor="end" fill="#52697b">'+i+'</text>';
+ svg+='<text x="405" y="165" fill="#52697b" font-size="13">x</text><text x="219" y="13" fill="#52697b" font-size="13">y</text><defs><clipPath id="challengeClip"><rect width="420" height="350"/></clipPath></defs>';
+ if(c.mode==='discrete'){
+ c.points.forEach(([x,y])=>svg+='<circle cx="'+XX(x)+'" cy="'+YY(y)+'" r="6.5" stroke="#087a83" stroke-width="2" fill="#087a83"/>');
+ }else{
+ let points=[];for(let i=0;i<=200;i++){const x=c.lo+(c.hi-c.lo)*i/200;points.push([XX(x),YY(c.fn(x))])}
+ svg+='<polyline points="'+points.map(p=>p.join(',')).join(' ')+'" clip-path="url(#challengeClip)" stroke="#087a83" stroke-width="3.5" fill="none"/>';
+ if(c.mode==='right'||c.mode==='both'){
+ const ends=c.mode==='both'?[0,points.length-1]:[points.length-1];
+ ends.forEach(i=>{const p=points[i],inner=points[i===0?8:points.length-9],dx=p[0]-inner[0],dy=p[1]-inner[1],mag=Math.hypot(dx,dy),ux=dx/mag,uy=dy/mag;
+ svg+='<path d="M'+(p[0]-ux*14-uy*7)+' '+(p[1]-uy*14+ux*7)+' L'+p[0]+' '+p[1]+' L'+(p[0]-ux*14+uy*7)+' '+(p[1]-uy*14-ux*7)+'" fill="none" stroke="#087a83" stroke-width="2.6"/>'});
+ }
+ if(c.mode!=='both')for(const [x,closed] of [[c.lo,c.lc],...(c.mode==='right'?[]:[[c.hi,c.rc]])])svg+='<circle cx="'+XX(x)+'" cy="'+YY(c.fn(x))+'" r="6.5" stroke="#087a83" stroke-width="2.6" fill="'+(closed?'#087a83':'white')+'"/>';
+ }
+ return svg+'</svg>';
+}
+let challengeIndex=0;
+function renderChallenge(){
+ const c=graphChallenges[challengeIndex];
+ $('graphcount').textContent='Graph '+(challengeIndex+1)+' of '+graphChallenges.length;
+ $('graphtitle').textContent=c.name;
+ $('graphselect').value=String(challengeIndex);
+ $('challengegraph').innerHTML=challengeSVG(c);
+ $('exploreprogress').textContent=stepsDone.size+' of '+graphChallenges.length+' completed';
+ ['d','r'].forEach(p=>{buildAnswer(p);$(p+'feedback').innerHTML=''});
+ $('hintcontent').classList.add('hidden');$('hintcontent').textContent='';
+}
+function answerFeedback(prefix,ok,correct){
+ $(prefix+'feedback').innerHTML='<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct!':'Try again.')+'</strong> '+(ok?'Your answer matches the graph.':'Check endpoint inclusion, minimum/maximum values, and whether you need an interval or a set.')+'</div>';
+}
+$('checkexplore').onclick=()=>{
+ const c=graphChallenges[challengeIndex],d=sameAnswer(collectAnswer('d'),c.domain),r=sameAnswer(collectAnswer('r'),c.range);
+ answerFeedback('d',d,c.domain);answerFeedback('r',r,c.range);
+ if(d&&r){stepsDone.add(challengeIndex);$('exploreprogress').textContent=stepsDone.size+' of '+graphChallenges.length+' completed'}
+};
+$('hint').onclick=()=>{const c=graphChallenges[challengeIndex];$('hintcontent').textContent=c.hint;$('hintcontent').classList.remove('hidden')};
+$('reveal').onclick=()=>{const c=graphChallenges[challengeIndex];setAnswer('d',c.domain);setAnswer('r',c.range);$('dfeedback').innerHTML='<div class="feedback">Domain: '+c.domain+'</div>';$('rfeedback').innerHTML='<div class="feedback">Range: '+c.range+'</div>'};
+$('nextgraph').onclick=()=>{challengeIndex=(challengeIndex+1)%graphChallenges.length;renderChallenge()};
+$('graphselect').onchange=()=>{challengeIndex=Number($('graphselect').value);renderChallenge()};
+graphChallenges.forEach((c,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+c.name;$('graphselect').appendChild(o)});
+renderChallenge();
 function tab(name){['explore','practice','mastery'].forEach(v=>$(v).classList.toggle('hidden',v!==name));document.querySelectorAll('[data-tab]').forEach(v=>v.classList.toggle('active',v.dataset.tab===name));window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
 function makeQuestion(type){
