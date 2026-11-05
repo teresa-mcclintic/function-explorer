@@ -49,6 +49,7 @@ function equation(f,a,h,k){
  if(f==='quadratic'&&h===0)fn='x²';
  if(f==='absolute'&&h===0)fn='|x|';
  if(f==='sqrt'&&h===0)fn='√x';
+ if(f==='linear'&&a!==1&&h!==0)fn='('+fn+')';
  const factor=a===1?'':a===-1?'−':showN(a);
  return 'g(x) = '+factor+fn+sign(k);
 }
