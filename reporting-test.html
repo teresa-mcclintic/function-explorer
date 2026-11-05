@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reporting Connection Test</title><style>body{font:16px Arial,sans-serif;background:#f4f8fb;color:#172d40}main{max-width:650px;margin:50px auto;padding:25px;background:white;border-radius:12px}button{font:700 16px Arial;background:#087a83;color:white;border:0;border-radius:8px;padding:13px;cursor:pointer}p{line-height:1.6}</style></head><body><main><h1>Function Explorer Reporting Test</h1><p>This sends one fictional student result (Demo, Lab 1, 8/8) to the configured Google Apps Script. No actual student data is used.</p><button id="send">Send test result</button><p id="status" role="status">Not sent.</p><p>After clicking, check Google Apps Script → Executions for doPost and check your Google Sheet for a Demo row. This page cannot confirm Google accepted the result.</p><p><a href="index.html">Return to Function Explorer</a></p></main><script>
+document.getElementById('send').onclick=async function(){
+const b=this,el=document.getElementById('status');b.disabled=true;el.textContent='Sending request…';
+const items=Array.from({length:8},(_,i)=>({skill:'Connection test',prompt:'Fictional test '+(i+1),response:'A',correctAnswer:'A',correct:true}));
+try{await fetch('https://script.google.com/macros/s/AKfycbwOuiyp99anDsmcYzAcgWeiQ3UsoiodUC_QwVQdfFInzs_ngnoVPDgnSJP_cAGu7vN7AQ/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({schemaVersion:1,lab:1,labTitle:'Function Basics Test',firstName:'Demo',completedAt:new Date().toISOString(),score:8,total:8,items})});el.textContent='Browser sent a request attempt. Check Apps Script Executions and the spreadsheet to verify delivery.'}
+catch(e){el.textContent='Browser request failed: '+e.message}
+b.disabled=false;
+};
+</script></body></html>
