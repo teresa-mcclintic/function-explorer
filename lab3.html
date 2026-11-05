@@ -99,7 +99,8 @@ function renderFields(prefix){
  const vals=optsBound.map(n=>({value:n,label:n}));
  if(type==='interval'){
  const lower=[{value:'-∞',label:'−∞'},...vals],upper=[...vals,{value:'∞',label:'∞'}];
- $(prefix+'fields').innerHTML='<div class="two" style="gap:9px"><label class="control">Left bound'+selectHTML(prefix+'left',lower,'-3')+'</label><label class="control">Right bound'+selectHTML(prefix+'right',upper,'3')+'</label><label class="control">Left endpoint'+selectHTML(prefix+'lc',[{value:'[',label:'[ Included'},{value:'(',label:'( Excluded'}],'[')+'</label><label class="control">Right endpoint'+selectHTML(prefix+'rc',[{value:']',label:'] Included'},{value:')',label:') Excluded'}],']')+'</label></div>';
+ const labels=prefix==='r'?{lower:'Lower bound',upper:'Upper bound',first:'Lower bound included?',last:'Upper bound included?'}:{lower:'Left bound',upper:'Right bound',first:'Left endpoint',last:'Right endpoint'};
+ $(prefix+'fields').innerHTML='<div class="two" style="gap:9px"><label class="control">'+labels.lower+selectHTML(prefix+'left',lower,'-3')+'</label><label class="control">'+labels.upper+selectHTML(prefix+'right',upper,'3')+'</label><label class="control">'+labels.first+selectHTML(prefix+'lc',[{value:'[',label:'[ Included'},{value:'(',label:'( Excluded'}],'[')+'</label><label class="control">'+labels.last+selectHTML(prefix+'rc',[{value:']',label:'] Included'},{value:')',label:') Excluded'}],']')+'</label></div>';
  }else if(type==='single'){
  $(prefix+'fields').innerHTML='<label class="control">Output or input value'+selectHTML(prefix+'single',vals,'0')+'</label>';
  }else{
