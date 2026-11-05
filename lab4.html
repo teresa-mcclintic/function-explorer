@@ -1,0 +1,178 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 4: Function Transformations | Function Explorer</title><style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#183244;background:#f4f8fb}*{box-sizing:border-box}body{margin:0}main{max-width:960px;margin:auto;padding:22px 16px 68px}h1{font-size:30px;margin:6px 0}h2{font-size:21px;margin:0}h3{font-size:16px;margin:0}p{line-height:1.5}.muted{color:#52697b}.eyebrow{text-transform:uppercase;font-size:12px;font-weight:700;letter-spacing:1px;color:#52697b}a{color:#087a83}.stack{display:grid;gap:15px}.card{padding:20px;border:1px solid #d6e3eb;border-radius:13px;background:white}.soft{background:#edf5f8;padding:14px;border-radius:10px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.nav{display:flex;flex-wrap:wrap;gap:13px;background:#edf5f8;padding:12px;border-radius:10px;font-size:14px}.tabs{display:flex;background:#e5edf2;padding:5px;border-radius:12px;gap:5px}.tab{flex:1;border:0;background:transparent;padding:12px 4px;border-radius:9px;font-weight:bold;color:#52697b;cursor:pointer}.tab.active{background:white;color:#075b65;box-shadow:0 1px 4px #0002}.btn{padding:11px 15px;border-radius:9px;background:white;color:#17394d;border:1px solid #b9cfd9;font:bold 14px Arial,Helvetica,sans-serif;cursor:pointer}.btn.primary{background:#087a83;color:white;border-color:#087a83}.hidden{display:none!important}.two{display:grid;grid-template-columns:1fr 1fr;gap:15px}.graph{border:1px solid #dbe6ec;border-radius:11px;background:white;padding:6px;max-width:580px;margin:0 auto;width:100%}.graph svg{width:100%;display:block;height:auto}.control{display:grid;gap:6px;font-size:14px;font-weight:700}select{font:16px Arial,Helvetica,sans-serif;color:#17394d;border:1px solid #b8cad5;border-radius:8px;background:white;padding:9px;width:100%}input[type=range]{width:100%;accent-color:#087a83}.equation{font:bold 24px Arial,Helvetica,sans-serif;line-height:1.5;text-align:center}.mini{font-size:13px}.pill{border:1px solid #c8dbe1;border-radius:20px;padding:7px 12px;font-size:12px;white-space:nowrap}.choice{display:block;text-align:left;width:100%;border:1px solid #bbd1dd;background:white;padding:12px;border-radius:9px;margin:7px 0;font:15px Arial,Helvetica,sans-serif;cursor:pointer}.choice.selected{border:2px solid #087a83;background:#e7f5f4}.feedback{padding:12px;background:#eaf5f3;border-left:4px solid #087a83;border-radius:7px}.feedback.warn{background:#fff7eb;border-color:#bf7e2c}.bar{height:8px;background:#e4eef2;border-radius:10px;overflow:hidden}.bar div{height:100%;background:#087a83}.metric{font-size:24px;font-weight:700}.legend{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;font-size:13px;color:#496475}.line{display:inline-block;width:25px;border-top:3px solid #087a83;vertical-align:middle;margin-right:5px}.line.dashed{border-top:3px dashed #96a9b6}footer{text-align:center;font-size:12px;color:#667b8a;margin-top:20px}@media(max-width:620px){.two{grid-template-columns:1fr}.card{padding:14px}h1{font-size:26px}.row.mobile{flex-wrap:wrap}}
+</style></head><body><main class="stack">
+<header><div class="eyebrow">Algebra 2 · Function Explorer</div><h1>Lab 4: Function Transformations</h1><div class="muted">How does an equation move or reshape its parent graph?</div></header>
+<div class="nav"><a href="index.html">← All labs</a><a href="lab1.html">Lab 1</a><a href="lab2.html">Lab 2</a><a href="lab3.html">Lab 3</a><strong aria-current="page">Lab 4</strong></div>
+<nav class="tabs" aria-label="Learning stages"><button class="tab active" data-tab="explore">1. Explore</button><button class="tab" data-tab="practice">2. Practice</button><button class="tab" data-tab="mastery">3. Mastery</button></nav>
+<section id="explore" class="stack">
+<div class="soft"><strong>Big idea:</strong> Compare a parent function <strong>f(x)</strong> with <strong>g(x) = a f(x − h) + k</strong>. The value <strong>h</strong> changes horizontal position, <strong>k</strong> changes vertical position, and <strong>a</strong> changes the graph's orientation or steepness.</div>
+<div class="card stack">
+<h2>Investigation: Move the function</h2>
+<label class="control">Choose a parent function<select id="family"><option value="quadratic">Quadratic: f(x) = x²</option><option value="absolute">Absolute value: f(x) = |x|</option><option value="sqrt">Square root: f(x) = √x</option><option value="linear">Linear: f(x) = x</option></select></label>
+<div class="graph"><svg id="exploregraph" viewBox="0 0 480 375" role="img" aria-label="Parent and transformed function graphs"></svg></div>
+<div class="legend"><span><i class="line dashed"></i>Parent function</span><span><i class="line"></i>Transformed function</span></div>
+<div class="two">
+<div class="soft stack"><label class="control">Horizontal shift: h = <strong id="hvalue">0</strong><input id="h" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="hdesc">No horizontal shift</div></div>
+<div class="soft stack"><label class="control">Vertical shift: k = <strong id="kvalue">0</strong><input id="k" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="kdesc">No vertical shift</div></div>
+</div>
+<div class="two"><label class="control">Reflection / stretch factor (a)<select id="a"><option value="1">1 — no vertical change</option><option value="-1">−1 — reflect over x-axis</option><option value="2">2 — vertical stretch</option><option value="0.5">½ — vertical compression</option><option value="-2">−2 — reflect and stretch</option><option value="-0.5">−½ — reflect and compress</option></select></label><div class="soft stack"><strong>What changed?</strong><div id="description" class="mini" aria-live="polite">The graphs overlap.</div></div></div>
+<div class="soft stack"><div class="eyebrow">Transformed equation</div><div id="equation" class="equation">g(x) = x²</div></div>
+<div class="row mobile"><button id="reset" class="btn">Reset to parent function</button><button id="newpreset" class="btn primary">Try a new transformation →</button></div>
+</div>
+<div class="card stack">
+<h2>Predict before you reveal</h2>
+<p class="muted" style="margin:0">Try this guided challenge. Change the sliders to match the description, then check your settings.</p>
+<div class="soft"><strong id="challengeprompt"></strong></div>
+<div id="challengefeedback" aria-live="polite"></div>
+<div class="row mobile"><button class="btn primary" id="checkchallenge">Check my transformation</button><button class="btn" id="nextchallenge">New challenge →</button></div>
+</div>
+<button class="btn primary" id="topractice">Continue to guided practice →</button>
+</section>
+<section id="practice" class="stack hidden"><div class="soft">Six questions with feedback. Use the parent function and the transformation rules to make predictions before checking your answers.</div><div class="row"><strong id="pcounter"></strong><span class="pill" id="pscore"></span></div><div class="bar"><div id="pbar"></div></div>
+<div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pquestion"></h2><div id="pvisual"></div><div id="poptions"></div><div id="pfeedback" aria-live="polite"></div><button id="pcheck" class="btn primary">Check answer</button><button id="pnext" class="btn primary hidden">Next question →</button></div><button id="tomastery" class="btn">Go to mastery →</button></section>
+<section id="mastery" class="stack hidden"><div class="card stack" id="mstart" style="text-align:center"><h2>Mastery check</h2><p>Eight new questions about shifts, reflections, vertical stretches and compressions, and transformed graphs. No feedback until you finish.</p><div class="soft"><strong>Mastery target: 7 of 8 correct</strong></div><button id="mbegin" class="btn primary">Start mastery check</button></div>
+<div id="mquiz" class="stack hidden"><div class="row"><strong id="mcounter"></strong><span class="pill">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mquestion"></h2><div id="mvisual"></div><div id="moptions"></div><button class="btn primary" id="msubmit">Submit answer →</button></div></div>
+<div id="mresults" class="card stack hidden"><div style="text-align:center"><div class="eyebrow">Mastery result</div><div class="metric" id="mscore"></div><h2 id="mverdict"></h2></div><div class="soft" id="mreview"></div><button class="btn primary" id="mretry">Try a new mastery check</button><button class="btn" id="mpractice">Review guided practice</button></div></section>
+<footer>Function Explorer · Lab 4 · Mastery results are submitted to your teacher's Google Sheet.</footer></main>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),rand=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+function shuffle(arr){let a=arr.slice();for(let i=a.length-1;i>0;i--){let j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+const fams={quadratic:{title:'quadratic',formula:'x²',fn:x=>x*x},absolute:{title:'absolute value',formula:'|x|',fn:x=>Math.abs(x)},sqrt:{title:'square root',formula:'√x',fn:x=>x<0?NaN:Math.sqrt(x)},linear:{title:'linear',formula:'x',fn:x=>x}};
+const showN=n=>n<0?'−'+Math.abs(n):String(n);
+const sign=n=>n<0?' − '+Math.abs(n):n>0?' + '+n:'';
+function inside(x,h){if(h===0)return x;if(h>0)return x+' − '+h;return x+' + '+(-h)}
+function equation(f,a,h,k){
+ let fn=f==='quadratic'?'('+inside('x',h)+')²':f==='absolute'?'|'+inside('x',h)+'|':f==='sqrt'?'√('+inside('x',h)+')':inside('x',h);
+ if(f==='quadratic'&&h===0)fn='x²';
+ if(f==='absolute'&&h===0)fn='|x|';
+ if(f==='sqrt'&&h===0)fn='√x';
+ const factor=a===1?'':a===-1?'−':showN(a);
+ return 'g(x) = '+factor+fn+sign(k);
+}
+function transformed(f,a,h,k,x){let base=fams[f].fn(x-h);return Number.isFinite(base)?a*base+k:NaN}
+const X=x=>240+x*29,Y=y=>188-y*24;
+function drawGraph(f,a,h,k){
+ let s='<svg viewBox="0 0 480 375" role="img" aria-label="Graph comparing parent and transformed functions">';
+ s+='<defs><clipPath id="clip4"><rect width="480" height="375"/></clipPath></defs><rect width="480" height="375" fill="white"/>';
+ for(let i=-8;i<=8;i++)s+='<path d="M'+X(i)+' 0V375" stroke="#e2ebef" fill="none"/>';
+ for(let i=-7;i<=7;i++)s+='<path d="M0 '+Y(i)+' H480" stroke="#e2ebef" fill="none"/>';
+ s+='<path d="M0 '+Y(0)+' H480 M'+X(0)+' 0V375" stroke="#69828e" stroke-width="1.8" fill="none"/>';
+ for(let i=-8;i<=8;i+=2)if(i)s+='<text x="'+X(i)+'" y="'+(Y(0)+15)+'" fill="#586f7d" font-size="11" text-anchor="middle">'+i+'</text>';
+ for(let i=-6;i<=6;i+=2)if(i)s+='<text x="'+(X(0)-10)+'" y="'+(Y(i)+4)+'" fill="#586f7d" font-size="11" text-anchor="end">'+i+'</text>';
+ s+='<text x="465" y="'+(Y(0)-8)+'" fill="#586f7d">x</text><text x="'+(X(0)+7)+'" y="15" fill="#586f7d">y</text>';
+ function path(aa,hh,kk){
+ let d='',pen=false;for(let i=0;i<=650;i++){let x=-8.1+i*16.2/650,y=transformed(f,aa,hh,kk,x);if(!Number.isFinite(y)||y<-9||y>9){pen=false;continue}d+=(pen?'L':'M')+X(x).toFixed(2)+' '+Y(y).toFixed(2);pen=true}
+ return d;
+ }
+ s+='<path d="'+path(1,0,0)+'" fill="none" stroke="#94aab7" stroke-dasharray="7 5" stroke-width="3" clip-path="url(#clip4)"/>';
+ s+='<path d="'+path(a,h,k)+'" fill="none" stroke="#087a83" stroke-width="3.5" clip-path="url(#clip4)"/>';
+ if(f==='sqrt'){for(const [aa,hh,kk,color] of [[1,0,0,'#94aab7'],[a,h,k,'#087a83']])s+='<circle cx="'+X(hh)+'" cy="'+Y(kk)+'" r="5" fill="'+color+'" stroke="white" stroke-width="1.5"/>'}
+ return s+'</svg>';
+}
+let challenge={h:2,k:-1,a:-1,f:'quadratic'};
+function describe(f,a,h,k){
+ let t=[];
+ if(h)t.push('shift '+Math.abs(h)+' '+(h>0?'right':'left'));
+ if(k)t.push('shift '+Math.abs(k)+' '+(k>0?'up':'down'));
+ if(a<0)t.push('reflect over the x-axis');
+ if(Math.abs(a)>1)t.push('vertically stretch by '+Math.abs(a));
+ if(Math.abs(a)<1)t.push('vertically compress by '+Math.abs(a));
+ return t.length?'Start with the '+fams[f].title+' parent graph; '+t.join('; ')+'.':'The transformed graph matches the parent graph.';
+}
+function exploreRender(){
+ let f=$('family').value,a=Number($('a').value),h=Number($('h').value),k=Number($('k').value);
+ $('hvalue').textContent=showN(h);$('kvalue').textContent=showN(k);
+ $('hdesc').textContent=h===0?'No horizontal shift':Math.abs(h)+' units '+(h>0?'right':'left');
+ $('kdesc').textContent=k===0?'No vertical shift':Math.abs(k)+' units '+(k>0?'up':'down');
+ $('description').textContent=describe(f,a,h,k);
+ $('equation').textContent=equation(f,a,h,k);
+ $('exploregraph').innerHTML=drawGraph(f,a,h,k);
+}
+['family','a','h','k'].forEach(id=>$(id).oninput=()=>{exploreRender();$('challengefeedback').innerHTML=''});
+$('reset').onclick=()=>{$('h').value=0;$('k').value=0;$('a').value=1;exploreRender();$('challengefeedback').innerHTML=''};
+function newPreset(){
+ let a=[-2,-1,-.5,.5,1,2][rand(0,5)],h=rand(-3,3),k=rand(-3,3);
+ if(a===1&&h===0&&k===0)h=2;
+ $('family').value=Object.keys(fams)[rand(0,3)];$('a').value=a;$('h').value=h;$('k').value=k;exploreRender();$('challengefeedback').innerHTML='';
+}
+$('newpreset').onclick=newPreset;
+function newChallenge(){
+ const f=Object.keys(fams)[rand(0,3)],h=rand(-3,3),k=rand(-3,3),a=[-1,1,2,.5][rand(0,3)];
+ challenge={f,h,k,a};
+ $('family').value=f;$('a').value=1;$('h').value=0;$('k').value=0;
+ $('challengeprompt').textContent='Using the '+fams[f].title+' parent function, create this transformation: '+describe(f,a,h,k);
+ $('challengefeedback').innerHTML='';exploreRender();
+}
+$('checkchallenge').onclick=()=>{
+ let c=challenge,ok=$('family').value===c.f&&Number($('h').value)===c.h&&Number($('k').value)===c.k&&Number($('a').value)===c.a;
+ $('challengefeedback').innerHTML='<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct! ':'Not yet. ')+'</strong>'+(ok?'Your equation and graph match the challenge.':'Check all three settings: horizontal shift, vertical shift, and factor a.')+'</div>';
+};
+$('nextchallenge').onclick=newChallenge;
+function makeQuestion(kind){
+ const f=['quadratic','absolute','sqrt','linear'][rand(0,3)];
+ const h=rand(-4,4)||2,k=rand(-4,4)||-2,a=[-2,-1,.5,2][rand(0,3)];
+ const parent=fams[f].title;
+ let topic,q,answer,opts=[],reason,visual='';
+ if(kind==='horizontal'){
+  topic='Horizontal translations';q='In '+equation(f,1,h,0)+', how does the graph move relative to its parent?';answer=Math.abs(h)+' units '+(h>0?'right':'left');opts=[answer,Math.abs(h)+' units '+(h>0?'left':'right'),Math.abs(h)+' units up',Math.abs(h)+' units down'];reason='The transformation is inside the function. x − h shifts right when h is positive and left when h is negative.';
+ }else if(kind==='vertical'){
+  topic='Vertical translations';q='In '+equation(f,1,0,k)+', what vertical shift is applied?';answer=Math.abs(k)+' units '+(k>0?'up':'down');opts=[answer,Math.abs(k)+' units '+(k>0?'down':'up'),Math.abs(k)+' units right',Math.abs(k)+' units left'];reason='Adding k outside the parent function shifts every output up or down.';
+ }else if(kind==='reflection'){
+  topic='Reflections';q='What happens when '+parent+' parent function f(x) is changed to g(x) = −f(x)?';answer='The graph reflects over the x-axis.';opts=[answer,'The graph reflects over the y-axis.','The graph shifts down 1 unit.','The graph shifts left 1 unit.'];reason='Multiplying all outputs by −1 changes each y-value to its opposite.';
+ }else if(kind==='scale'){
+  let z=[.5,2,-2][rand(0,2)];topic='Stretch and compression';q='What is the effect of multiplying a parent function by '+showN(z)+' outside the function?';
+  answer=describe(f,z,0,0).replace('Start with the '+parent+' parent graph; ','').replace(/\.$/,'');
+  opts=[answer,z<0?'reflect over the y-axis':'shift '+z+' units up',Math.abs(z)===.5?'vertically stretch by 2':'vertically compress by ½','shift '+Math.abs(z)+' units right'];reason='An outside factor changes the y-values. A negative factor also reflects them over the x-axis.';
+ }else if(kind==='vertex'){
+  const f2=Math.random()<.5?'quadratic':'absolute';let xx=rand(-4,4),yy=rand(-3,3);topic='Vertex after translation';q='For '+equation(f2,1,xx,yy)+', what is the vertex?';
+  answer='('+xx+', '+yy+')';opts=[answer,'('+(-xx)+', '+yy+')','('+yy+', '+xx+')','('+xx+', '+(-yy)+')'];reason='The parent vertex (0, 0) moves to (h, k).';
+ }else if(kind==='equation'){
+  topic='Write a transformed equation';let xx=rand(-3,3)||2,yy=rand(-3,3)||-1;const f2=['quadratic','absolute','sqrt'][rand(0,2)];
+  q='Start with f(x) = '+fams[f2].formula+'. Shift the graph '+Math.abs(xx)+' units '+(xx>0?'right':'left')+' and '+Math.abs(yy)+' units '+(yy>0?'up':'down')+'. Which equation is correct?';
+  answer=equation(f2,1,xx,yy);opts=[answer,equation(f2,1,-xx,yy),equation(f2,1,xx,-yy),equation(f2,1,-xx,-yy)];reason='Use f(x − h) + k. Remember that the sign inside the function is opposite the direction named by h.';
+ }else if(kind==='graph'){
+  topic='Read the graph';const ff=Math.random()<.5?'quadratic':'absolute';const hh=rand(-3,3)||2,kk=rand(-3,3)||-1;
+  q='Compare the solid graph with the dashed parent graph. Which transformation occurred?';
+  visual=drawGraph(ff,1,hh,kk);
+  answer='Shift '+Math.abs(hh)+' '+(hh>0?'right':'left')+' and '+Math.abs(kk)+' '+(kk>0?'up':'down');
+  opts=[answer,'Shift '+Math.abs(hh)+' '+(hh>0?'left':'right')+' and '+Math.abs(kk)+' '+(kk>0?'up':'down'),'Shift '+Math.abs(hh)+' '+(hh>0?'right':'left')+' and '+Math.abs(kk)+' '+(kk>0?'down':'up'),'Shift '+Math.abs(hh)+' '+(hh>0?'left':'right')+' and '+Math.abs(kk)+' '+(kk>0?'down':'up')];
+  reason='Compare the vertex or corner of the solid graph to the parent location (0, 0).';
+ }else{
+  topic='Predict a transformed point';const xx=rand(-3,3),yy=rand(-3,3),hh=rand(-3,3)||1,kk=rand(-3,3)||-1;
+  q='A point ('+xx+', '+yy+') is on f(x). If g(x) = f(x − ('+hh+')) + ('+kk+'), which point must be on g(x)?';
+  answer='('+(xx+hh)+', '+(yy+kk)+')';opts=[answer,'('+(xx-hh)+', '+(yy+kk)+')','('+(xx+hh)+', '+(yy-kk)+')','('+(xx-hh)+', '+(yy-kk)+')'];reason='A translation by (h, k) sends (x, y) to (x + h, y + k).';
+ }
+ opts=shuffle([...new Set(opts)]);let inc=1;
+ while(opts.length<4){const extra='None of these ('+inc+++')';opts.push(extra)}
+ return {topic,q,opts,correct:opts.indexOf(answer),reason,visual};
+}
+function renderVisual(q){return q.visual?'<div class="graph">'+q.visual+'</div><div class="legend"><span><i class="line dashed"></i>Parent</span><span><i class="line"></i>Transformed</span></div>':''}
+function choices(id,q){$(id).innerHTML=q.opts.map((v,i)=>'<button class="choice" data-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+v+'</button>').join('')}
+function pick(container,callback){$(container).onclick=e=>{const b=e.target.closest('[data-choice]');if(!b)return;callback(+b.dataset.choice);$(container).querySelectorAll('[data-choice]').forEach((el,i)=>el.classList.toggle('selected',i===+b.dataset.choice))}}
+const practiceKinds=['horizontal','vertical','reflection','scale','vertex','graph'];let pq=practiceKinds.map(makeQuestion),pi=0,ps=0,pa=-1,done=false;
+function practiceRender(){let q=pq[pi];pa=-1;done=false;$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=pi/6*100+'%';$('ptopic').textContent=q.topic;$('pquestion').textContent=q.q;$('pvisual').innerHTML=renderVisual(q);choices('poptions',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+pick('poptions',x=>{if(!done)pa=x});
+$('pcheck').onclick=()=>{if(pa<0||done)return;done=true;let q=pq[pi],ok=pa===q.correct;if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct!':'Not quite.')+'</strong> '+q.reason+' Correct answer: '+q.opts[q.correct]+'.</div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practiceRender()}else{$('pcounter').textContent='Practice complete';$('pbar').style.width='100%';$('pquestion').textContent='You got '+ps+' of 6 correct. Continue to the mastery check when ready.';$('poptions').innerHTML='';$('pvisual').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let mq=[],mi=0,ms=[],selected=-1;
+function beginMastery(){mq=shuffle(['horizontal','vertical','reflection','scale','vertex','equation','graph','point']).map(makeQuestion);mi=0;ms=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){let q=mq[mi];selected=-1;$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=mi/8*100+'%';$('mtopic').textContent=q.topic;$('mquestion').textContent=q.q;$('mvisual').innerHTML=renderVisual(q);choices('moptions',q);$('msubmit').textContent=mi===7?'Finish mastery check →':'Submit answer →'}
+pick('moptions',x=>selected=x);
+$('msubmit').onclick=()=>{if(selected<0)return;ms.push(selected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){
+ $('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');
+ const score=mq.filter((q,i)=>ms[i]===q.correct).length;
+ $('mscore').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Review and try again';
+ const wrong=mq.map((q,i)=>({q,i})).filter(o=>o.q.correct!==ms[o.i]);
+ $('mreview').innerHTML=wrong.length?'<strong>Concepts to review:</strong>'+wrong.map(o=>'<p><strong>'+o.q.topic+':</strong> '+o.q.q+'<br>Correct answer: '+o.q.opts[o.q.correct]+'. '+o.q.reason+'</p>').join(''):'All eight answers correct!';
+ if(window.FunctionExplorerReporting)window.FunctionExplorerReporting.submit(mq.map((q,i)=>({skill:q.topic,prompt:q.q,response:q.opts[ms[i]],correctAnswer:q.opts[q.correct],correct:ms[i]===q.correct})));
+}
+$('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;$('mpractice').onclick=()=>{pi=0;ps=0;pq=practiceKinds.map(makeQuestion);practiceRender();tab('practice')};
+function tab(name){['explore','practice','mastery'].forEach(n=>$(n).classList.toggle('hidden',n!==name));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
+exploreRender();newChallenge();practiceRender();
+})();
+</script><script src="student.js?v=reporting-20261105-3"></script></body></html>
