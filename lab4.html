@@ -222,6 +222,6 @@ function results(){
 $('mbegin').onclick=beginMastery;$('mretry').onclick=beginMastery;$('mpractice').onclick=()=>{pi=0;ps=0;pq=practiceKinds.map(makeQuestion);practiceRender();tab('practice')};
 function tab(name){['explore','practice','mastery'].forEach(n=>$(n).classList.toggle('hidden',n!==name));document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
-exploreRender();newChallenge();practiceRender();
+practiceRender();
 })();
 </script><script src="student.js?v=reporting-lab4-1"></script></body></html>
