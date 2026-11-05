@@ -157,7 +157,7 @@ function generateSet(types,avoid){
 function makeGraphQuestion(){
  let x=randomInt(-6,6),y=randomInt(-12,12);
  const correct='f('+x+') = '+y;
- const choices=[correct,'f('+y+') = '+x,'f('+x+') = '+(y+2),'f('+(x+1)+') = '+y];
+ const choices=[correct,'f('+x+') = '+(y+2),'f('+(x+1)+') = '+y,'f('+(x-1)+') = '+(y+1)];
  const opts=shuffle(choices);
  return ['Graph interpretation','The graph of y = f(x) passes through ('+x+', '+y+'). Which statement describes this point?',opts,opts.indexOf(correct),'The graph point ('+x+', '+y+') tells you f('+x+') = '+y+'.'];
 }
@@ -171,7 +171,7 @@ $('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100
 let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
 function startMastery(){attempt++;
  const practiced=practiceQuestions.map(q=>q[1]);
- mq=generateSet(shuffle([0,1,2,3,4,5,6,7]),practiced).map(q=>q[0]==='Graph interpretation'?makeGraphQuestion():q);
+ mq=generateSet(shuffle([0,1,2,3,4,5,6,7]),practiced);
  mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
 function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
 $('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
