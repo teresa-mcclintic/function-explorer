@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Function Explorer | Algebra 2</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#172d40;background:#f4f8fb}*{box-sizing:border-box}body{margin:0}main{max-width:940px;margin:auto;padding:24px 16px 70px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}h1{font-size:32px;margin:4px 0}h2{font-size:22px;margin:0 0 9px}h3{margin:0 0 12px}p{line-height:1.55}.eyebrow{color:#52697b;text-transform:uppercase;letter-spacing:1px;font-size:12px;font-weight:700}
+.tag{border:1px solid #d8e4ea;padding:8px 13px;border-radius:22px;font-size:12px}.tabs{display:flex;gap:6px;background:#e7eef3;padding:6px;border-radius:12px;margin-bottom:18px}
+button{font:inherit;cursor:pointer}.tab{flex:1;border:0;border-radius:8px;background:transparent;padding:12px 5px;font-weight:700;color:#52697b}.tab.active{background:white;color:#123b5b;box-shadow:0 1px 5px #152b3c22}
+.card{background:white;border:1px solid #d9e4eb;border-radius:14px;padding:20px;margin-bottom:14px}.muted{color:#52697b}.soft{padding:15px;border-radius:10px;background:#eef5f8}.action{padding:12px 17px;border:1px solid #bccbd3;border-radius:9px;background:white;font-weight:700}.action.primary{background:#087a83;border-color:#087a83;color:white}.action:disabled{opacity:.45;cursor:default}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px}.stack{display:grid;gap:15px}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:14px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+label{display:block}input[type=range]{width:100%;accent-color:#087a83}input[type=number]{font:inherit;padding:12px;border:1px solid #aabec9;border-radius:8px;max-width:170px;width:100%}
+.math{font-size:25px;font-weight:700;text-align:center;margin:9px 0}.machine{display:flex;justify-content:center;align-items:center;gap:14px;margin:16px auto}.machine .number{border:2px solid #b8d1d9;padding:13px 19px;border-radius:11px;text-align:center;min-width:85px}.machine .number.output{border-color:#087a83}.machine small{display:block;color:#52697b;margin-bottom:5px}.arrow{text-align:center;color:#087a83;font-weight:700}
+svg{width:100%;display:block;max-height:340px}.graph{border:1px solid #d9e4eb;border-radius:10px;overflow:hidden}.graph-title{font-weight:700;padding:12px 12px 0}
+table{border-collapse:collapse;width:100%;text-align:center}td,th{padding:8px;border-bottom:1px solid #d9e4eb}th{background:#eef5f8}.selected{background:#cfeded;font-weight:700}
+.choice{width:100%;text-align:left;background:#fff;border:1px solid #cbd8df;padding:13px;border-radius:9px;margin:4px 0}.choice.selected{border:2px solid #087a83;background:#e8f5f5}
+.feedback{padding:14px;border-left:4px solid #087a83;background:#eef5f8;border-radius:7px}.feedback.incorrect{border-color:#c58634}
+.bar{height:8px;background:#e7eef3;border-radius:12px;overflow:hidden}.bar div{height:100%;background:#087a83;transition:width .2s}.hidden{display:none!important}
+footer{font-size:13px;color:#52697b;text-align:center;margin-top:35px}
+@media(max-width:580px){.grid,.controls{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}h1{font-size:27px}.card{padding:15px}.machine{gap:8px}.machine .number{min-width:65px;padding:10px}.arrow{font-size:12px}}
+</style></head><body><main>
+<header><div><div class="eyebrow">Algebra 2 · Interactive learning lab</div><h1>Function Explorer</h1><div class="muted">Explore → Practice → Mastery Check</div></div><div class="tag">Linear functions · Level 1</div></header>
+<nav class="tabs" aria-label="Learning stages"><button class="tab active" data-tab="explore">1. Explore</button><button class="tab" data-tab="practice">2. Practice</button><button class="tab" data-tab="mastery">3. Mastery</button></nav>
+<section id="explore">
+ <div class="card soft"><strong>Your mission:</strong> Experiment with a function. Watch how its equation, graph, and table describe the same inputs and outputs. Then test your predictions.</div>
+ <div class="card stack">
+  <div class="row"><h2>The Function Machine</h2><button id="reset" class="action">Reset</button></div>
+  <div id="eq" class="math">f(x) = 2x + 3</div>
+  <div class="controls"><label><div class="row"><strong>Multiplier (a)</strong><output id="av">2</output></div><input id="a" type="range" min="-3" max="3" value="2"></label><label><div class="row"><strong>Starting value (b)</strong><output id="bv">3</output></div><input id="b" type="range" min="-5" max="5" value="3"></label></div>
+  <div class="soft"><div class="row"><strong>Choose an input</strong><strong id="xv">2</strong></div><input id="x" aria-label="Input x" type="range" min="-5" max="5" value="2">
+   <div class="machine"><div class="number"><small>Input</small><strong id="xin">2</strong></div><div class="arrow"><div id="rule">× 2, then + 3</div><div style="font-size:25px">⟶</div></div><div class="number output"><small>Output</small><strong id="yout">7</strong></div></div>
+  </div>
+  <div class="grid"><div class="graph"><div class="graph-title">Graph</div><svg id="graph" viewBox="0 0 340 290" role="img" aria-label="Graph of the function with a highlighted point"></svg></div><div class="graph"><div class="graph-title">Table of values</div><table><thead><tr><th>Input x</th><th>Output f(x)</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+ </div>
+ <div class="card stack"><div class="row"><h3>Think like a mathematician</h3><span class="tag" id="explabel">1 of 3</span></div><p id="exq"></p><div class="row" style="justify-content:flex-start"><input type="number" id="exa" placeholder="Your prediction" aria-label="Your prediction"><button class="action primary" id="excheck">Check</button></div><div id="exfeedback" aria-live="polite"></div><button id="exnext" class="action hidden">Next investigation →</button></div>
+ <button class="action primary" id="topractice" style="width:100%">Go to guided practice →</button>
+</section>
+<section id="practice" class="hidden"><div class="card soft">Apply what you discovered. Each question gives immediate feedback and an explanation.</div><div class="row"><strong id="pcounter"></strong><span id="pscore"></span></div><div class="bar" style="margin:12px 0"><div id="pbar"></div></div>
+ <div class="card stack"><div class="eyebrow" id="ptopic"></div><h2 id="pq"></h2><div id="popts"></div><div id="pfeedback" aria-live="polite"></div><button class="action primary" id="pcheck">Check answer</button><button class="action primary hidden" id="pnext">Next question →</button></div><button id="tomastery" class="action" style="width:100%">Go to mastery check →</button>
+</section>
+<section id="mastery" class="hidden"><div id="mstart" class="card stack" style="text-align:center"><h2>Ready to show what you know?</h2><p>8 questions on function notation, inputs, outputs, tables and graphs. No hints during the check.</p><div class="soft"><strong>Mastery target: 7 out of 8 correct</strong></div><button class="action primary" id="mbegin">Start mastery check</button></div>
+ <div id="mquiz" class="hidden stack"><div class="row"><strong id="mcounter"></strong><span class="tag">Independent check</span></div><div class="bar"><div id="mbar"></div></div><div class="card stack"><div class="eyebrow" id="mtopic"></div><h2 id="mq"></h2><div id="mopts"></div><button class="action primary" id="msubmit">Submit answer →</button></div></div>
+ <div id="mresults" class="card stack hidden"><div style="text-align:center"><div class="eyebrow">Mastery check complete</div><div class="math" style="font-size:48px" id="mresult"></div><h2 id="mverdict"></h2><p id="msummary"></p></div><div class="soft" id="mreview"></div><button class="action primary" id="mretry">Try another mastery check</button><button class="action" id="mpractice">Review guided practice</button></div>
+</section>
+<footer>Function Explorer · Student practice tool · Results are shown on this device and are not submitted to your teacher.</footer>
+</main><script>
+(function(){
+const $=id=>document.getElementById(id);
+let a=2,b=3,x=2;
+const equation=(a,b)=>'f(x) = '+(a===0?'0':a===1?'x':a===-1?'−x':a+'x')+(b<0?' − '+(-b):' + '+b);
+const fmt=n=>n<0?'− '+(-n):'+ '+n;
+function draw(){
+a=+$('a').value;b=+$('b').value;x=+$('x').value;const y=a*x+b;
+$('av').textContent=a;$('bv').textContent=b;$('xv').textContent=x;$('eq').textContent=equation(a,b);
+$('xin').textContent=x;$('yout').textContent=y;$('rule').textContent='× '+a+', then '+fmt(b);
+$('rows').innerHTML=Array.from({length:11},(_,i)=>i-5).map(k=>'<tr class="'+(k===x?'selected':'')+'"><td>'+k+'</td><td>'+(a*k+b)+'</td></tr>').join('');
+const X=t=>170+t*24,Y=t=>145-t*9.1;let svg='';
+for(let k=-7;k<=7;k++)svg+='<line x1="'+X(k)+'" y1="0" x2="'+X(k)+'" y2="290" stroke="#dfe9ef"/>';
+for(let k=-15;k<=15;k++)svg+='<line x1="0" y1="'+Y(k)+'" x2="340" y2="'+Y(k)+'" stroke="#dfe9ef"/>';
+svg+='<path d="M0 '+Y(0)+' H340 M'+X(0)+' 0 V290" fill="none" stroke="#697f8d" stroke-width="1.5"/>';
+for(let k=-6;k<=6;k+=2)if(k)svg+='<text x="'+X(k)+'" y="'+(Y(0)+15)+'" text-anchor="middle" font-size="10" fill="#52697b">'+k+'</text>';
+for(let k=-10;k<=10;k+=5)if(k)svg+='<text x="'+(X(0)-8)+'" y="'+(Y(k)+4)+'" text-anchor="end" font-size="10" fill="#52697b">'+k+'</text>';
+svg+='<text x="325" y="'+(Y(0)-8)+'" fill="#52697b">x</text><text x="'+(X(0)+7)+'" y="13" fill="#52697b">y</text>';
+svg+='<line x1="'+X(-7.2)+'" y1="'+Y(a*-7.2+b)+'" x2="'+X(7.2)+'" y2="'+Y(a*7.2+b)+'" stroke="#087a83" stroke-width="3"/>';
+svg+='<path d="M'+X(x)+' '+Y(0)+' V'+Y(y)+' H'+X(0)+'" stroke="#d58b30" stroke-dasharray="5 4" stroke-width="2" fill="none"/>';
+svg+='<circle cx="'+X(x)+'" cy="'+Y(y)+'" r="7" fill="#d58b30" stroke="white" stroke-width="2"/>';
+const px=Math.max(5,Math.min(268,X(x)+10)),py=Math.max(4,Math.min(264,Y(y)-30));
+svg+='<rect x="'+px+'" y="'+py+'" width="69" height="23" rx="6" fill="#c87923"/><text x="'+(px+34)+'" y="'+(py+16)+'" text-anchor="middle" font-size="11" font-weight="bold" fill="white">('+x+', '+y+')</text>';
+$('graph').innerHTML=svg;
+}
+['a','b','x'].forEach(id=>$(id).addEventListener('input',draw));
+$('reset').onclick=()=>{$('a').value=2;$('b').value=3;$('x').value=2;draw()};
+function tab(name){document.querySelectorAll('[data-tab]').forEach(bt=>bt.classList.toggle('active',bt.dataset.tab===name));['explore','practice','mastery'].forEach(t=>$(t).classList.toggle('hidden',t!==name));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-tab]').forEach(bt=>bt.onclick=()=>tab(bt.dataset.tab));
+$('topractice').onclick=()=>tab('practice');$('tomastery').onclick=()=>tab('mastery');
+const investigations=[
+['Set the multiplier to 2 and starting value to 3. Predict the output when x = 4.',11,'f(4) = 2(4) + 3 = 11. The point is (4, 11).'],
+['Set the multiplier to 3 and starting value to 1. What input produces an output of 10?',3,'Solve 3x + 1 = 10. The input is 3.'],
+['Set the multiplier to −2 and starting value to 4. Predict the output when x = 3.',-2,'f(3) = −2(3) + 4 = −2.']
+];let exi=0;
+function showEx(){$('explabel').textContent=(exi+1)+' of 3';$('exq').textContent=investigations[exi][0];$('exa').value='';$('exfeedback').innerHTML='';$('excheck').disabled=false;$('exnext').classList.add('hidden');$('exnext').textContent=exi===2?'Investigations complete ✓':'Next investigation →'}
+$('excheck').onclick=()=>{if(!$('exa').value.trim())return;const good=Number($('exa').value)===investigations[exi][1];$('exfeedback').innerHTML='<div class="feedback '+(good?'':'incorrect')+'"><strong>'+(good?'Correct!':'Try adjusting the sliders to investigate.')+'</strong><p>'+investigations[exi][2]+'</p></div>';if(good){$('excheck').disabled=true;$('exnext').classList.remove('hidden')}};
+$('exnext').onclick=()=>{if(exi<2){exi++;showEx()}else{$('exnext').classList.add('hidden');$('exfeedback').innerHTML='<div class="feedback">All three investigations complete. You are ready for guided practice.</div>'}};
+const questions=[
+['Function notation','If f(x) = 3x − 4, what is f(5)?',['11','19','1','15'],0,'Substitute 5 for x: 3(5) − 4 = 11.'],
+['Input vs. output','For f(x) = 2x + 7, which input produces an output of 15?',['37','4','8','15'],1,'Set 2x + 7 = 15, then solve x = 4.'],
+['Reading a table','A function table contains (−2, 5), (0, 3), (2, 1), and (4, −1). What is f(2)?',['2','5','1','−1'],2,'The row with input 2 has output 1.'],
+['Reading a graph','The point (−3, 8) is on y = f(x). Which statement is correct?',['f(8) = −3','f(−3) = 8','f(3) = 8','f(−3) = −8'],1,'An ordered pair is (input, output), so f(−3) = 8.'],
+['Rate of change','A linear function has f(1) = 5 and f(2) = 8. What is f(3)?',['9','11','13','10'],1,'Each increase of 1 in x increases the output by 3.'],
+['Function rule','Which equation fits x = 0 → y = 4, x = 1 → y = 6, x = 2 → y = 8?',['f(x) = x + 4','f(x) = 4x + 2','f(x) = 2x + 4','f(x) = 2x − 4'],2,'The starting output is 4 and the slope is 2.'],
+['Evaluating','If g(x) = −2x + 5, what is g(−3)?',['−1','11','−11','1'],1,'−2(−3) + 5 = 11.'],
+['Input vs. output','If f(x) = 4x − 1, what input gives an output of 19?',['5','4','18','75'],0,'Solve 4x − 1 = 19, so x = 5.'],
+['Reading a graph','If (2, −5) is on a function graph, what is f(2)?',['5','2','−2','−5'],3,'The output at x = 2 is −5.'],
+['Reading a table','A table shows f(0) = 7, f(1) = 4, f(2) = 1. What is f(3) if the function is linear?',['−2','4','−3','10'],0,'The output decreases by 3 each step.'],
+['Function rule','A linear function has f(0) = −2 and increases 4 whenever x increases 1. Which rule fits?',['f(x) = −2x + 4','f(x) = 4x − 2','f(x) = 2x − 4','f(x) = 4x + 2'],1,'The slope is 4 and the intercept is −2.'],
+['Reading a graph','Which ordered pair lies on f(x) = −x + 2?',['(3, 1)','(−1, −3)','(2, 0)','(0, −2)'],2,'Substitute 2 to get f(2) = 0.'],
+['Input vs. output','A graph passes through (−4, 6). What input gives output 6 at that point?',['6','−6','4','−4'],3,'The x-coordinate −4 is the input.'],
+['Evaluating','If h(x) = x + 9, what is h(−12)?',['−3','3','21','−21'],0,'−12 + 9 = −3.']
+];
+function renderOptions(target,q){$(target).innerHTML=q[2].map((o,i)=>'<button class="choice" data-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>').join('')}
+let pi=0,ps=0,pselected=-1,pan=false;
+function practice(){pselected=-1;pan=false;const q=questions[pi];$('pcounter').textContent='Question '+(pi+1)+' of 6';$('pscore').textContent=ps+' correct';$('pbar').style.width=(pi/6*100)+'%';$('ptopic').textContent=q[0];$('pq').textContent=q[1];renderOptions('popts',q);$('pfeedback').innerHTML='';$('pcheck').classList.remove('hidden');$('pnext').classList.add('hidden');$('pnext').textContent=pi===5?'Finish practice →':'Next question →'}
+$('popts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt||pan)return;pselected=+bt.dataset.choice;$('popts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===pselected))};
+$('pcheck').onclick=()=>{if(pselected<0)return;pan=true;const q=questions[pi],ok=pselected===q[3];if(ok)ps++;$('pscore').textContent=ps+' correct';$('pfeedback').innerHTML='<div class="feedback '+(ok?'':'incorrect')+'"><strong>'+(ok?'Correct!':'Correct answer: '+q[2][q[3]])+'</strong><p>'+q[4]+'</p></div>';$('pcheck').classList.add('hidden');$('pnext').classList.remove('hidden')};
+$('pnext').onclick=()=>{if(pi<5){pi++;practice()}else{$('pbar').style.width='100%';$('pcounter').textContent='Practice complete';$('ptopic').textContent='Practice summary';$('pq').textContent='You answered '+ps+' of 6 correctly. Continue to the mastery check or repeat practice.';$('popts').innerHTML='';$('pfeedback').innerHTML='';$('pnext').classList.add('hidden')}};
+let attempt=0,mq=[],mi=0,manswers=[],mselected=-1;
+function startMastery(){attempt++;const order=Array.from({length:questions.length},(_,i)=>(i+attempt*3)%questions.length);mq=order.slice(0,8).map(i=>questions[i]);mi=0;manswers=[];$('mstart').classList.add('hidden');$('mresults').classList.add('hidden');$('mquiz').classList.remove('hidden');renderMastery()}
+function renderMastery(){mselected=-1;let q=mq[mi];$('mcounter').textContent='Question '+(mi+1)+' of 8';$('mbar').style.width=(mi/8*100)+'%';$('mtopic').textContent=q[0];$('mq').textContent=q[1];renderOptions('mopts',q);$('msubmit').textContent=mi===7?'Finish check →':'Submit answer →'}
+$('mopts').onclick=e=>{let bt=e.target.closest('[data-choice]');if(!bt)return;mselected=+bt.dataset.choice;$('mopts').querySelectorAll('button').forEach((b,i)=>b.classList.toggle('selected',i===mselected))};
+$('msubmit').onclick=()=>{if(mselected<0)return;manswers.push(mselected);if(mi<7){mi++;renderMastery()}else results()};
+function results(){$('mquiz').classList.add('hidden');$('mresults').classList.remove('hidden');let score=mq.filter((q,i)=>q[3]===manswers[i]).length;$('mresult').textContent=score+' / 8';$('mverdict').textContent=score>=7?'Mastery target reached':'Keep building your understanding';$('msummary').textContent=score>=7?'You demonstrated strong understanding of these concepts.':'Use the explanations below to review, then try again.';const missed=mq.map((q,i)=>({q,i})).filter(v=>v.q[3]!==manswers[v.i]);$('mreview').innerHTML=missed.length?'<strong>Concepts to review</strong>'+missed.map(v=>'<div style="border-top:1px solid #cbd8df;padding:12px 0"><strong>'+v.q[0]+'</strong><p>'+v.q[1]+'</p><div>Your answer: '+v.q[2][manswers[v.i]]+'</div><div><strong>Correct:</strong> '+v.q[2][v.q[3]]+'. '+v.q[4]+'</div></div>').join(''):'<strong>All correct!</strong> You connected equations, tables, graphs and function notation.'}
+$('mbegin').onclick=startMastery;$('mretry').onclick=startMastery;$('mpractice').onclick=()=>{pi=0;ps=0;practice();tab('practice')};
+draw();showEx();practice();
+})();
+</script></body></html>
