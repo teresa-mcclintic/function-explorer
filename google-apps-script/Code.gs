@@ -15,7 +15,7 @@ function doPost(e){
  try{
   const raw=e&&e.postData&&e.postData.contents;if(!raw||raw.length>18000)return reply({ok:false,error:'size'});
   const d=JSON.parse(raw);
-  if(d.schemaVersion!==1||![1,2,3].includes(d.lab)||typeof d.firstName!=='string'||!/^[\p{L}][\p{L} '\-]{0,31}$/u.test(d.firstName)||!Array.isArray(d.items)||d.items.length!==8)return reply({ok:false,error:'validation'});
+  if(d.schemaVersion!==1||![1,2,3,4].includes(d.lab)||typeof d.firstName!=='string'||!/^[\p{L}][\p{L} '\-]{0,31}$/u.test(d.firstName)||!Array.isArray(d.items)||d.items.length!==8)return reply({ok:false,error:'validation'});
   if(d.items.some(i=>typeof i.correct!=='boolean'||typeof i.skill!=='string'||typeof i.prompt!=='string'))return reply({ok:false,error:'items'});
   const score=d.items.filter(i=>i.correct).length;if(score!==d.score||d.total!==8)return reply({ok:false,error:'score'});
   const date=Utilities.formatDate(new Date(),TZ,'yyyy-MM-dd');
