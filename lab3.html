@@ -45,7 +45,7 @@ function model(type,params={}){
  let start=params.start??-2,b=params.b??1,slope=params.slope??1,closed=params.lc??true;
  return {type:'ray',l:start,r:6,lc:closed,rc:false,fn:x=>slope*x+b,domain:(closed?'[':'(')+start+', ∞)',range:slope>0?(closed?'[':'(')+(slope*start+b)+', ∞)':'(−∞, '+(slope*start+b)+(closed?']':')'),ray:true,desc:'The arrow shows the function continues beyond the visible graph.'};
 }
-const X=x=>210+29*x,Y=y=>175-23*y;
+const X=x=>210+23*x,Y=y=>175-23*y;
 function graph(m,highlight=null){
  let s='<svg viewBox="0 0 420 350" role="img" aria-label="Coordinate graph showing domain and range">';
  for(let i=-7;i<=7;i++)s+='<path d="M'+X(i)+' 0V350 M0 '+Y(i)+' H420" stroke="#e0e9ee" fill="none"/>';
@@ -125,7 +125,7 @@ function setAnswer(prefix,answer){
  if(type==='set'){$(prefix+'values').querySelectorAll('input').forEach(inp=>inp.checked=a.values.includes(inp.value))}
 }
 function challengeSVG(c){
- const XX=x=>210+29*x,YY=y=>175-23*y;
+ const XX=x=>210+23*x,YY=y=>175-23*y;
  let svg='<svg viewBox="0 0 420 350" role="img" aria-label="Graph '+c.name+'">';
  svg+='<rect width="420" height="350" fill="white"/>';
  for(let i=-7;i<=7;i++)svg+='<path d="M'+XX(i)+' 0V350 M0 '+YY(i)+' H420" stroke="#e1eaf0" stroke-width=".9" fill="none"/>';
