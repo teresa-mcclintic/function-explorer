@@ -6,27 +6,26 @@
 <div class="nav"><a href="index.html">← All labs</a><a href="lab1.html">Lab 1</a><a href="lab2.html">Lab 2</a><a href="lab3.html">Lab 3</a><strong aria-current="page">Lab 4</strong></div>
 <nav class="tabs" aria-label="Learning stages"><button class="tab active" data-tab="explore">1. Explore</button><button class="tab" data-tab="practice">2. Practice</button><button class="tab" data-tab="mastery">3. Mastery</button></nav>
 <section id="explore" class="stack">
-<div class="soft"><strong>Big idea:</strong> Compare a parent function <strong>f(x)</strong> with <strong>g(x) = a f(x − h) + k</strong>. The value <strong>h</strong> changes horizontal position, <strong>k</strong> changes vertical position, and <strong>a</strong> changes the graph's orientation or steepness.</div>
+<div class="soft"><strong>Explore in four steps:</strong> Predict what will happen, test your idea by changing the graph, then describe what you noticed. Only the controls needed for each investigation will be available.</div>
 <div class="card stack">
-<h2>Investigation: Move the function</h2>
-<label class="control">Choose a parent function<select id="family"><option value="quadratic">Quadratic: f(x) = x²</option><option value="absolute">Absolute value: f(x) = |x|</option><option value="sqrt">Square root: f(x) = √x</option><option value="linear">Linear: f(x) = x</option></select></label>
+<div class="row mobile"><div><div class="eyebrow" id="stagecount">Investigation 1 of 4</div><h2 id="stagetitle">Translations</h2></div><span class="pill" id="stageprogress">0 of 4 complete</span></div><div class="bar"><div id="stagebar"></div></div>
+<div class="soft stack"><div class="eyebrow">Step 1 · Predict</div><strong id="predictquestion"></strong><div id="predictoptions"></div><div id="predictfeedback" aria-live="polite"></div><button class="btn primary" id="checkprediction">Check prediction and unlock graph</button></div>
+<div class="stack">
+<div class="soft stack"><div class="eyebrow">Step 2 · Test your prediction</div><strong id="testprompt">Choose your prediction above to unlock the graph controls.</strong></div>
+<label class="control">Parent function<select id="family"><option value="quadratic">Quadratic: f(x) = x²</option><option value="absolute">Absolute value: f(x) = |x|</option><option value="sqrt">Square root: f(x) = √x</option><option value="linear">Linear: f(x) = x</option></select></label>
 <div class="graph"><svg id="exploregraph" viewBox="0 0 480 375" role="img" aria-label="Parent and transformed function graphs"></svg></div>
 <div class="legend"><span><i class="line dashed"></i>Parent function</span><span><i class="line"></i>Transformed function</span></div>
 <div class="two">
-<div class="soft stack"><label class="control">Horizontal shift: h = <strong id="hvalue">0</strong><input id="h" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="hdesc">No horizontal shift</div></div>
-<div class="soft stack"><label class="control">Vertical shift: k = <strong id="kvalue">0</strong><input id="k" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="kdesc">No vertical shift</div></div>
+<div class="soft stack"><label class="control">Horizontal shift h = <strong id="hvalue">0</strong><input id="h" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="hdesc"></div></div>
+<div class="soft stack"><label class="control">Vertical shift k = <strong id="kvalue">0</strong><input id="k" type="range" min="-4" max="4" step="1" value="0"></label><div class="mini" id="kdesc"></div></div></div>
+<div class="two"><label class="control">Reflection or stretch factor a<select id="a"><option value="1">1 — no vertical change</option><option value="-1">−1 — reflect across x-axis</option><option value="2">2 — vertical stretch</option><option value="0.5">½ — vertical compression</option><option value="-2">−2 — reflect and stretch</option><option value="-0.5">−½ — reflect and compress</option></select></label><div class="soft stack"><strong>What changed?</strong><div id="description" class="mini"></div></div></div>
+<div class="soft stack"><div class="eyebrow">Equation</div><div id="equation" class="equation"></div></div>
+<div id="experimentfeedback" aria-live="polite"></div>
+<div class="row mobile"><button class="btn" id="reset">Reset graph</button><button class="btn primary" id="checkexperiment">Check my graph</button></div>
 </div>
-<div class="two"><label class="control">Reflection / stretch factor (a)<select id="a"><option value="1">1 — no vertical change</option><option value="-1">−1 — reflect over x-axis</option><option value="2">2 — vertical stretch</option><option value="0.5">½ — vertical compression</option><option value="-2">−2 — reflect and stretch</option><option value="-0.5">−½ — reflect and compress</option></select></label><div class="soft stack"><strong>What changed?</strong><div id="description" class="mini" aria-live="polite">The graphs overlap.</div></div></div>
-<div class="soft stack"><div class="eyebrow">Transformed equation</div><div id="equation" class="equation">g(x) = x²</div></div>
-<div class="row mobile"><button id="reset" class="btn">Reset to parent function</button><button id="newpreset" class="btn primary">Try a new transformation →</button></div>
+<div id="reflectionbox" class="soft stack hidden"><div class="eyebrow">Step 3 · Notice the pattern</div><p id="reflectiontext" style="margin:0"></p><button class="btn primary" id="nextstage">Next investigation →</button></div>
 </div>
-<div class="card stack">
-<h2>Predict before you reveal</h2>
-<p class="muted" style="margin:0">Try this guided challenge. Change the sliders to match the description, then check your settings.</p>
-<div class="soft"><strong id="challengeprompt"></strong></div>
-<div id="challengefeedback" aria-live="polite"></div>
-<div class="row mobile"><button class="btn primary" id="checkchallenge">Check my transformation</button><button class="btn" id="nextchallenge">New challenge →</button></div>
-</div>
+<div class="card stack"><h2>Patterns you discovered</h2><div class="soft" id="summary">Finish an investigation to add its transformation rule here.</div></div>
 <button class="btn primary" id="topractice">Continue to guided practice →</button>
 </section>
 <section id="practice" class="stack hidden"><div class="soft">Six questions with feedback. Use the parent function and the transformation rules to make predictions before checking your answers.</div><div class="row"><strong id="pcounter"></strong><span class="pill" id="pscore"></span></div><div class="bar"><div id="pbar"></div></div>
@@ -55,7 +54,7 @@ function equation(f,a,h,k){
 }
 function transformed(f,a,h,k,x){let base=fams[f].fn(x-h);return Number.isFinite(base)?a*base+k:NaN}
 const X=x=>240+x*24,Y=y=>188-y*24;
-function drawGraph(f,a,h,k){
+function drawGraph(f,a,h,k,showTransformed=true){
  let s='<svg viewBox="0 0 480 375" role="img" aria-label="Graph comparing parent and transformed functions">';
  s+='<defs><clipPath id="clip4"><rect width="480" height="375"/></clipPath></defs><rect width="480" height="375" fill="white"/>';
  for(let i=-8;i<=8;i++)s+='<path d="M'+X(i)+' 0V375" stroke="#e2ebef" fill="none"/>';
@@ -69,49 +68,98 @@ function drawGraph(f,a,h,k){
  return d;
  }
  s+='<path d="'+path(1,0,0)+'" fill="none" stroke="#94aab7" stroke-dasharray="7 5" stroke-width="3" clip-path="url(#clip4)"/>';
- s+='<path d="'+path(a,h,k)+'" fill="none" stroke="#087a83" stroke-width="3.5" clip-path="url(#clip4)"/>';
- if(f==='sqrt'){for(const [aa,hh,kk,color] of [[1,0,0,'#94aab7'],[a,h,k,'#087a83']])s+='<circle cx="'+X(hh)+'" cy="'+Y(kk)+'" r="5" fill="'+color+'" stroke="white" stroke-width="1.5"/>'}
+ if(showTransformed)s+='<path d="'+path(a,h,k)+'" fill="none" stroke="#087a83" stroke-width="3.5" clip-path="url(#clip4)"/>';
+ if(f==='sqrt'){for(const [aa,hh,kk,color] of (showTransformed?[[1,0,0,'#94aab7'],[a,h,k,'#087a83']]:[[1,0,0,'#94aab7']]))s+='<circle cx="'+X(hh)+'" cy="'+Y(kk)+'" r="5" fill="'+color+'" stroke="white" stroke-width="1.5"/>'}
  return s+'</svg>';
 }
-let challenge={h:2,k:-1,a:-1,f:'quadratic'};
+
 function describe(f,a,h,k){
- let t=[];
- if(h)t.push('shift '+Math.abs(h)+' '+(h>0?'right':'left'));
- if(k)t.push('shift '+Math.abs(k)+' '+(k>0?'up':'down'));
- if(a<0)t.push('reflect over the x-axis');
- if(Math.abs(a)>1)t.push('vertically stretch by '+Math.abs(a));
- if(Math.abs(a)<1)t.push('vertically compress by '+Math.abs(a));
- return t.length?'Start with the '+fams[f].title+' parent graph; '+t.join('; ')+'.':'The transformed graph matches the parent graph.';
+ const parts=[];
+ if(h)parts.push('shift '+Math.abs(h)+(h>0?' right':' left'));
+ if(k)parts.push('shift '+Math.abs(k)+(k>0?' up':' down'));
+ if(a<0)parts.push('reflect across the x-axis');
+ if(Math.abs(a)>1)parts.push('vertical stretch by '+Math.abs(a));
+ if(Math.abs(a)<1)parts.push('vertical compression by '+Math.abs(a));
+ return parts.length?'From the '+fams[f].title+' parent: '+parts.join('; ')+'.':'The two graphs overlap.';
 }
+const investigations=[
+ {title:'Translations',f:'quadratic',a:1,h:3,k:0,q:'Predict: What happens when f(x) = x² becomes g(x) = (x − 3)²?',
+ choices:['Move 3 units left','Move 3 units right','Move 3 units up','Move 3 units down'],correct:1,
+ explanation:'The shift is inside the function: (x − 3)² moves the parabola 3 units RIGHT.',
+ task:'Set the horizontal shift to 3 to make g(x) = (x − 3)². Keep a = 1 and k = 0.',
+ takeaway:'In f(x − h), a positive h shifts right, and a negative h shifts left. Adding k outside the function moves the graph up or down.'},
+ {title:'Reflections',f:'quadratic',a:-1,h:0,k:0,q:'Predict: What happens when f(x) = x² becomes g(x) = −x²?',
+ choices:['Reflect over the x-axis','Reflect over the y-axis','Move down 1','Move left 1'],correct:0,
+ explanation:'The minus sign outside the function changes the sign of every output: a reflection across the x-axis.',
+ task:'Change the factor a to −1 to reflect the parabola. Keep h = 0 and k = 0.',
+ takeaway:'A negative multiplier outside f(x) reflects all output values across the x-axis.'},
+ {title:'Stretches and compressions',f:'quadratic',a:.5,h:0,k:0,q:'Predict: What happens when f(x) = x² becomes g(x) = ½x²?',
+ choices:['Parabola looks wider','Parabola looks narrower','Move up','Move right'],correct:0,
+ explanation:'Multiplying each output by ½ brings the graph closer to the x-axis, making the parabola wider.',
+ task:'Change a to ½ to compress the graph vertically. Keep h = 0 and k = 0.',
+ takeaway:'When |a| > 1 the graph stretches vertically; when 0 < |a| < 1 it compresses vertically. For an upward parabola, compression looks wider.'},
+ {title:'Put it all together',f:'absolute',a:-2,h:2,k:-1,
+ q:'Predict: Which changes produce g(x) = −2|x − 2| − 1 from f(x) = |x|?',
+ choices:['Left 2, up 1, stretch','Right 2, down 1, reflect and stretch by 2','Right 2, up 1, reflect','Left 2, down 1, compression'],correct:1,
+ explanation:'x − 2 moves right 2; −1 moves down 1; −2 reflects across the x-axis and stretches vertically by 2.',
+ task:'Choose absolute value, then create g(x) = −2|x − 2| − 1 using all three controls.',
+ takeaway:'Combined transformations follow the same rules: h controls horizontal position, k vertical position, and a reflection or vertical scaling.'}
+];
+let stage=0,selectedPrediction=-1,unlocked=false;
+const finished=new Set();
 function exploreRender(){
- let f=$('family').value,a=Number($('a').value),h=Number($('h').value),k=Number($('k').value);
+ const f=$('family').value,a=Number($('a').value),h=Number($('h').value),k=Number($('k').value);
  $('hvalue').textContent=showN(h);$('kvalue').textContent=showN(k);
  $('hdesc').textContent=h===0?'No horizontal shift':Math.abs(h)+' units '+(h>0?'right':'left');
  $('kdesc').textContent=k===0?'No vertical shift':Math.abs(k)+' units '+(k>0?'up':'down');
  $('description').textContent=describe(f,a,h,k);
  $('equation').textContent=equation(f,a,h,k);
- $('exploregraph').innerHTML=drawGraph(f,a,h,k);
+ $('exploregraph').innerHTML=drawGraph(f,a,h,k,unlocked);
 }
-['family','a','h','k'].forEach(id=>$(id).oninput=()=>{exploreRender();$('challengefeedback').innerHTML=''});
-$('reset').onclick=()=>{$('h').value=0;$('k').value=0;$('a').value=1;exploreRender();$('challengefeedback').innerHTML=''};
-function newPreset(){
- let a=[-2,-1,-.5,.5,1,2][rand(0,5)],h=rand(-3,3),k=rand(-3,3);
- if(a===1&&h===0&&k===0)h=2;
- $('family').value=Object.keys(fams)[rand(0,3)];$('a').value=a;$('h').value=h;$('k').value=k;exploreRender();$('challengefeedback').innerHTML='';
+function setControlAccess(){
+ $('family').disabled=!unlocked||stage!==3;
+ $('h').disabled=!unlocked||![0,3].includes(stage);
+ $('k').disabled=!unlocked||stage!==3;
+ $('a').disabled=!unlocked||![1,2,3].includes(stage);
+ $('reset').disabled=!unlocked;$('checkexperiment').disabled=!unlocked;
 }
-$('newpreset').onclick=newPreset;
-function newChallenge(){
- const f=Object.keys(fams)[rand(0,3)],h=rand(-3,3),k=rand(-3,3),a=[-1,1,2,.5][rand(0,3)];
- challenge={f,h,k,a};
- $('family').value=f;$('a').value=1;$('h').value=0;$('k').value=0;
- $('challengeprompt').textContent='Using the '+fams[f].title+' parent function, create this transformation: '+describe(f,a,h,k);
- $('challengefeedback').innerHTML='';exploreRender();
+function updateSummary(){
+ $('summary').innerHTML=[['After translations:','f(x − h) shifts right for positive h; f(x) + k shifts up for positive k.'],['After reflections:','−f(x) reflects over the x-axis.'],['After stretches/compressions:','|a| > 1 stretches vertically; 0 < |a| < 1 compresses vertically.'],['Combined:','Use a, h, and k together: g(x) = a f(x − h) + k.']]
+ .filter((x,i)=>finished.has(i)).map(x=>'<p style="margin:8px 0"><strong>'+x[0]+'</strong> '+x[1]+'</p>').join('')||'Finish an investigation to add its transformation rule here.';
 }
-$('checkchallenge').onclick=()=>{
- let c=challenge,ok=$('family').value===c.f&&Number($('h').value)===c.h&&Number($('k').value)===c.k&&Number($('a').value)===c.a;
- $('challengefeedback').innerHTML='<div class="feedback '+(ok?'':'warn')+'"><strong>'+(ok?'Correct! ':'Not yet. ')+'</strong>'+(ok?'Your equation and graph match the challenge.':'Check all three settings: horizontal shift, vertical shift, and factor a.')+'</div>';
+function loadStage(index){
+ stage=index;selectedPrediction=-1;unlocked=false;
+ const c=investigations[stage];$('stagecount').textContent='Investigation '+(stage+1)+' of 4';$('stagetitle').textContent=c.title;
+ $('stageprogress').textContent=finished.size+' of 4 complete';$('stagebar').style.width=(finished.size/4*100)+'%';
+ $('predictquestion').textContent=c.q;
+ $('predictoptions').innerHTML=c.choices.map((v,i)=>'<button class="choice" data-pred="'+i+'">'+String.fromCharCode(65+i)+'. '+v+'</button>').join('');
+ $('predictfeedback').innerHTML='';$('checkprediction').classList.remove('hidden');
+ $('family').value=c.f;$('a').value=1;$('h').value=0;$('k').value=0;
+ $('testprompt').textContent='Make a prediction above before changing the graph.';$('experimentfeedback').innerHTML='';
+ $('reflectionbox').classList.add('hidden');
+ $('nextstage').textContent=stage===3?'Explore again ↻':'Next investigation →';
+ updateSummary();setControlAccess();exploreRender();
+}
+$('predictoptions').onclick=e=>{const b=e.target.closest('[data-pred]');if(!b||unlocked)return;selectedPrediction=Number(b.dataset.pred);$('predictoptions').querySelectorAll('[data-pred]').forEach(x=>x.classList.toggle('selected',x===b))};
+$('checkprediction').onclick=()=>{
+ if(selectedPrediction<0)return;
+ const c=investigations[stage],correct=selectedPrediction===c.correct;
+ $('predictfeedback').innerHTML='<div class="feedback '+(correct?'':'warn')+'"><strong>'+(correct?'Correct!':'Compare your prediction with the rule.')+'</strong> '+c.explanation+'</div>';
+ unlocked=true;$('checkprediction').classList.add('hidden');$('testprompt').textContent=c.task;
+ setControlAccess();exploreRender();
 };
-$('nextchallenge').onclick=newChallenge;
+['family','a','h','k'].forEach(id=>$(id).oninput=()=>{exploreRender();$('experimentfeedback').innerHTML=''});
+$('reset').onclick=()=>{const c=investigations[stage];$('family').value=c.f;$('a').value=1;$('h').value=0;$('k').value=0;exploreRender();$('experimentfeedback').innerHTML=''};
+$('checkexperiment').onclick=()=>{
+ if(!unlocked)return;
+ const c=investigations[stage],ok=$('family').value===c.f&&Number($('a').value)===c.a&&Number($('h').value)===c.h&&Number($('k').value)===c.k;
+ if(!ok){$('experimentfeedback').innerHTML='<div class="feedback warn"><strong>Not yet.</strong> Compare the graph with the description, and check your equation.</div>';return}
+ $('experimentfeedback').innerHTML='<div class="feedback"><strong>Correct.</strong> Your graph and equation match the target.</div>';
+ finished.add(stage);$('stageprogress').textContent=finished.size+' of 4 complete';$('stagebar').style.width=(finished.size/4*100)+'%';
+ $('reflectiontext').textContent=c.takeaway;$('reflectionbox').classList.remove('hidden');updateSummary();
+};
+$('nextstage').onclick=()=>{if(!finished.has(stage))return;loadStage((stage+1)%4)};
+loadStage(0);
 function makeQuestion(kind){
  const f=['quadratic','absolute','sqrt','linear'][rand(0,3)];
  const h=rand(-4,4)||2,k=rand(-4,4)||-2,a=[-2,-1,.5,2][rand(0,3)];
