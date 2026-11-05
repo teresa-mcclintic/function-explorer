@@ -83,10 +83,10 @@ function describe(f,a,h,k){
  return parts.length?'From the '+fams[f].title+' parent: '+parts.join('; ')+'.':'The two graphs overlap.';
 }
 const investigations=[
- {title:'Translations',f:'quadratic',a:1,h:3,k:0,q:'Predict: What happens when f(x) = x² becomes g(x) = (x − 3)²?',
+ {title:'Translations',f:'quadratic',a:1,h:3,k:2,q:'Predict: What happens when f(x) = x² becomes g(x) = (x − 3)²?',
  choices:['Move 3 units left','Move 3 units right','Move 3 units up','Move 3 units down'],correct:1,
  explanation:'The shift is inside the function: (x − 3)² moves the parabola 3 units RIGHT.',
- task:'Set the horizontal shift to 3 to make g(x) = (x − 3)². Keep a = 1 and k = 0.',
+ task:'First set h = 3 to shift right. Then set k = 2 to move up. Make g(x) = (x − 3)² + 2.',
  takeaway:'In f(x − h), a positive h shifts right, and a negative h shifts left. Adding k outside the function moves the graph up or down.'},
  {title:'Reflections',f:'quadratic',a:-1,h:0,k:0,q:'Predict: What happens when f(x) = x² becomes g(x) = −x²?',
  choices:['Reflect over the x-axis','Reflect over the y-axis','Move down 1','Move left 1'],correct:0,
@@ -119,7 +119,7 @@ function exploreRender(){
 function setControlAccess(){
  $('family').disabled=!unlocked||stage!==3;
  $('h').disabled=!unlocked||![0,3].includes(stage);
- $('k').disabled=!unlocked||stage!==3;
+ $('k').disabled=!unlocked||![0,3].includes(stage);
  $('a').disabled=!unlocked||![1,2,3].includes(stage);
  $('reset').disabled=!unlocked;$('checkexperiment').disabled=!unlocked;
 }
