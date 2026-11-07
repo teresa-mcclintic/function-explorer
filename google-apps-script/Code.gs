@@ -33,7 +33,7 @@ function dailySummary(){
  const sh=resultSheet();if(sh.getLastRow()<2)return;
  const rows=sh.getRange(2,1,sh.getLastRow()-1,10).getValues().filter(r=>{
   const cell=r[1];
-  const rowDate=cell instanceof Date ? Utilities.formatDate(cell,TZ,'yyyy-MM-dd') : String(cell).trim();
+  const rowDate=cell instanceof Date ? Utilities.formatDate(cell,sh.getParent().getSpreadsheetTimeZone(),'yyyy-MM-dd') : String(cell).trim();
   return rowDate===date;
  });
  if(!rows.length){console.log('No submissions matching '+date+'; inspect column B date types and time zone.');return}
