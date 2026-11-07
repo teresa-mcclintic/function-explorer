@@ -31,8 +31,12 @@ function dailySummary(){
  const yesterday=new Date(Date.now()-24*60*60*1000);
  const date=Utilities.formatDate(yesterday,TZ,'yyyy-MM-dd');
  const sh=resultSheet();if(sh.getLastRow()<2)return;
- const rows=sh.getRange(2,1,sh.getLastRow()-1,10).getValues().filter(r=>r[1]===date);
- if(!rows.length)return;
+ const rows=sh.getRange(2,1,sh.getLastRow()-1,10).getValues().filter(r=>{
+  const cell=r[1];
+  const rowDate=cell instanceof Date ? Utilities.formatDate(cell,TZ,'yyyy-MM-dd') : String(cell).trim();
+  return rowDate===date;
+ });
+ if(!rows.length){console.log('No submissions matching '+date+'; inspect column B date types and time zone.');return}
  const msg=['Function Explorer mastery summary for '+date,'',String(rows.length)+' completed attempt(s)',''];
  rows.forEach(r=>msg.push(r[2]+' — Lab '+r[3]+' ('+r[4]+'): '+r[5]+'/'+r[6]+'; Review: '+(r[8]||'none')));
  msg.push('','For individual question responses, open your school-owned Google Sheet.','Student first names are self-reported.');
@@ -42,4 +46,8 @@ function installDailySummary(){
  if(!settings().getProperty('REPORT_EMAIL')||!settings().getProperty('SHEET_ID'))throw new Error('Set REPORT_EMAIL and SHEET_ID first');
  ScriptApp.getProjectTriggers().filter(t=>t.getHandlerFunction()==='dailySummary').forEach(t=>ScriptApp.deleteTrigger(t));
  ScriptApp.newTrigger('dailySummary').timeBased().everyDays(1).atHour(7).inTimezone(TZ).create();
+}
+// Run manually to test yesterday's summary. Sends email only if matching rows exist.
+function testYesterdayEmail(){
+ dailySummary();
 }
